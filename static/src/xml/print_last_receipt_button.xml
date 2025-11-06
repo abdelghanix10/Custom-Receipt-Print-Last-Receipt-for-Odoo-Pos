@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="custom_receipts_for_pos.PrintLastReceiptButton" owl="1">
+        <button class="btn btn-light btn-lg" t-on-click="onClick" style="margin: 5px; width: 100%;">
+            <i class="fa fa-print fa-2x"/>
+            <br/>
+            <span>Print Last Receipt</span>
+        </button>
+    </t>
+
+    <t t-name="point_of_sale.ActionpadWidget" t-inherit="point_of_sale.ActionpadWidget" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div" position="inside">
+            <PrintLastReceiptButton/>
+        </xpath>
+    </t>
+</templates>
