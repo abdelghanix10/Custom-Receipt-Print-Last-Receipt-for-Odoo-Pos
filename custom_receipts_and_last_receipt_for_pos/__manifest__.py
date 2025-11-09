@@ -40,6 +40,7 @@
     'images': ['static/description/banner.png'],
     'depends': ['point_of_sale'],
     'data': [
+        'security/ir.model.access.csv',
         'data/pos_receipt_design1_data.xml',
         'data/pos_receipt_design2_data.xml',
         'data/pos_receipt_design3_data.xml',
