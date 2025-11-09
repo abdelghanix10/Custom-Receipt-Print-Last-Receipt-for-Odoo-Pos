@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//setting[@id='other_devices']" position="after">
-                <setting title="Customize the POS receipts" string="Custom Receipt" help="Use custom receipt designs">
+                <setting title="Custom Order Receipts" string="Custom Order Receipts" help="Use custom receipt designs for orders.">
                     <field name="is_custom_receipt"/>
                     <div class="content-group mt16">
                         <div class="row mt16">
@@ -17,19 +17,24 @@
                                    invisible="not is_custom_receipt"
                                    required="is_custom_receipt"/>
                         </div>
+                    </div>
+                </setting>
+                <setting title="Print Last Receipt" string="Print Last Receipt" help="Enable a button to print the last paid order.">
+                    <field name="is_print_last_receipt"/>
+                    <div class="content-group mt16">
                         <div class="row mt16">
                             <label class="col-lg-4 o_light_label"
                                    for="last_receipt_design_id"/>
                             <field name="last_receipt_design_id"
-                                   invisible="not is_custom_receipt"
-                                   required="is_custom_receipt"/>
+                                   invisible="not is_print_last_receipt"
+                                   required="is_print_last_receipt"/>
                         </div>
                     </div>
-                    <div class="content-group mt16">
-                        <field name="design_receipt" invisible="1"/>
-                        <field name="last_design_receipt" invisible="1"/>
-                    </div>
                 </setting>
+                <div class="content-group mt16" invisible="1">
+                    <field name="design_receipt"/>
+                    <field name="last_design_receipt"/>
+                </div>
             </xpath>
         </field>
     </record>
