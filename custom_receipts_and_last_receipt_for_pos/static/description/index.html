@@ -1,1009 +1,2234 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Custom POS Receipt Design & Last Receipt - Odoo 18.0</title>
-    <meta name="description"
-        content="Enhance your Point of Sale with custom receipt designs and convenient last receipt printing functionality for Odoo 18.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <meta
+      name="description"
+      content="Enhance your Point of Sale with custom receipt designs and convenient last receipt printing functionality for Odoo 18.0"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
     <style>
-        :root {
-            --primary-color: #7f54b3;
-            --bg-white: #fff;
-            --text-color: #121212;
-            --text-color-light: #64728f;
-        }
+      :root {
+        --primary-color: #7f54b3;
+        --bg-white: #fff;
+        --text-color: #121212;
+        --text-color-light: #64728f;
+      }
 
-        body {
-            font-family: "Montserrat", sans-serif;
-        }
+      body {
+        font-family: "Montserrat", sans-serif;
+      }
 
-        .nav-tabs .nav-item.show .nav-link,
-        .nav-tabs .nav-link.active {
-            color: #121212;
-            font-family: Montserrat;
-            font-size: 16px !important;
-            font-weight: 500 !important;
-            border-radius: 30px;
-            line-height: normal;
-            text-transform: capitalize;
-            background-color: #F5F5F5;
-            border: none;
-            margin-bottom: 0;
-            padding: 12px 24px;
-        }
+      .nav-tabs .nav-item.show .nav-link,
+      .nav-tabs .nav-link.active {
+        color: #121212;
+        font-family: Montserrat;
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        border-radius: 30px;
+        line-height: normal;
+        text-transform: capitalize;
+        background-color: #f5f5f5;
+        border: none;
+        margin-bottom: 0;
+        padding: 12px 24px;
+      }
 
-        .nav-tabs .nav-link:focus,
-        .nav-tabs .nav-link:hover {
-            border-color: transparent;
-            isolation: isolate;
-        }
+      .nav-tabs .nav-link:focus,
+      .nav-tabs .nav-link:hover {
+        border-color: transparent;
+        isolation: isolate;
+      }
 
-        .nav-tabs .nav-link:focus-visible {
-            border-color: transparent;
-            box-shadow: none;
-        }
+      .nav-tabs .nav-link:focus-visible {
+        border-color: transparent;
+        box-shadow: none;
+      }
 
-        /* owl-carosel */
-        .owl-carousel .owl-nav {
-            position: absolute;
-            top: 42%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-42%);
-        }
+      /* owl-carosel */
+      .owl-carousel .owl-nav {
+        position: absolute;
+        top: 42%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-42%);
+      }
 
-        .owl-carousel .owl-nav button.owl-prev {
-            position: absolute;
-            right: -36px;
-            font-size: 28px;
-            background-color: #e4e4e4;
-            border-radius: 20px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+      .owl-carousel .owl-nav button.owl-prev {
+        position: absolute;
+        right: -36px;
+        font-size: 28px;
+        background-color: #e4e4e4;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
-        .owl-carousel .owl-nav button.owl-next {
-            position: absolute;
-            left: -36px;
-            font-size: 28px;
-            background-color: #e4e4e4;
-            border-radius: 20px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-        }
+      .owl-carousel .owl-nav button.owl-next {
+        position: absolute;
+        left: -36px;
+        font-size: 28px;
+        background-color: #e4e4e4;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- overview -->
     <div class="container">
-        <div class="my-5">
-            <!-- button tab -->
-            <!--  -->
-            <!-- version support -->
+      <div class="my-5">
+        <!-- button tab -->
+        <!--  -->
+        <!-- version support -->
 
-            <div class="supports my-5 py-3" style="border-bottom: 1px solid #e7e7e7;">
-                <div class="row justify-content-between">
-                    <div class="col-4">
-                    </div>
-                    <div class="col-6">
-                        <div class="row" style="margin-top:10px">
-
-                            <div class="my-3 d-flex align-items-center justify-content-end">
-                                <span class="me-3"><b>Supports: </b></span>
-                                <div class="text-center"
-                                    style="background-color:#017E84 !important; font-size:0.8rem !important; color:#fff !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:50px !important; min-width:120px !important">
-                                    Community
-                                </div>
-                                <div class="text-center"
-                                    style="background-color:#875A7B !important; color:#fff !important; font-size:0.8rem !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:50px !important; min-width:120px !important">
-                                    Enterprise
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" style="margin-top:10px">
-                            <div class="d-flex align-items-center justify-content-end">
-                                <span class="me-3"><b>Availability: </b></span>
-                                <div class="text-center col"
-                                    style="font-size:0.8rem !important; color:#5B899E !important; border:1px solid #5B899E; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:20px !important; min-width:120px !important">
-                                    <i class="fa fa-check" style="color:green"></i> On Premise
-                                </div>
-                                <div class="text-center col"
-                                    style="font-size:0.8rem !important; border:1px solid #714b67; color:#714b67 !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:20px !important; min-width:120px !important">
-                                    <i class="fa fa-check" style="color:green"></i> Odoo.sh
-                                </div>
-                                <div class="text-center col"
-                                    style="border:1px solid #017E84; font-size:0.8rem !important; color:#017E84 !important; font-weight:500 !important; padding:4px !important; margin:0 3px !important; border-radius:20px !important; min-width:120px !important">
-                                    <i class="fa fa-times" style="color:red"></i> Odoo Online
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div
+          class="supports my-5 py-3"
+          style="border-bottom: 1px solid #e7e7e7"
+        >
+          <div class="row justify-content-between">
+            <div class="col-4"></div>
+            <div class="col-6">
+              <div class="row" style="margin-top: 10px">
+                <div class="my-3 d-flex align-items-center justify-content-end">
+                  <span class="me-3"><b>Supports: </b></span>
+                  <div
+                    class="text-center"
+                    style="
+                      background-color: #017e84 !important;
+                      font-size: 0.8rem !important;
+                      color: #fff !important;
+                      font-weight: 500 !important;
+                      padding: 4px !important;
+                      margin: 0 3px !important;
+                      border-radius: 50px !important;
+                      min-width: 120px !important;
+                    "
+                  >
+                    Community
+                  </div>
+                  <div
+                    class="text-center"
+                    style="
+                      background-color: #875a7b !important;
+                      color: #fff !important;
+                      font-size: 0.8rem !important;
+                      font-weight: 500 !important;
+                      padding: 4px !important;
+                      margin: 0 3px !important;
+                      border-radius: 50px !important;
+                      min-width: 120px !important;
+                    "
+                  >
+                    Enterprise
+                  </div>
                 </div>
+              </div>
+              <div class="row" style="margin-top: 10px">
+                <div class="d-flex align-items-center justify-content-end">
+                  <span class="me-3"><b>Availability: </b></span>
+                  <div
+                    class="text-center col"
+                    style="
+                      font-size: 0.8rem !important;
+                      color: #5b899e !important;
+                      border: 1px solid #5b899e;
+                      font-weight: 500 !important;
+                      padding: 4px !important;
+                      margin: 0 3px !important;
+                      border-radius: 20px !important;
+                      min-width: 120px !important;
+                    "
+                  >
+                    <i class="fa fa-check" style="color: green"></i> On Premise
+                  </div>
+                  <div
+                    class="text-center col"
+                    style="
+                      font-size: 0.8rem !important;
+                      border: 1px solid #714b67;
+                      color: #714b67 !important;
+                      font-weight: 500 !important;
+                      padding: 4px !important;
+                      margin: 0 3px !important;
+                      border-radius: 20px !important;
+                      min-width: 120px !important;
+                    "
+                  >
+                    <i class="fa fa-check" style="color: green"></i> Odoo.sh
+                  </div>
+                  <div
+                    class="text-center col"
+                    style="
+                      border: 1px solid #017e84;
+                      font-size: 0.8rem !important;
+                      color: #017e84 !important;
+                      font-weight: 500 !important;
+                      padding: 4px !important;
+                      margin: 0 3px !important;
+                      border-radius: 20px !important;
+                      min-width: 120px !important;
+                    "
+                  >
+                    <i class="fa fa-times" style="color: red"></i> Odoo Online
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="myTabContent">
+          <!-- description -->
+          <div
+            class="tab-pane fade show active"
+            id="home"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+            <div
+              class="position-relative"
+              style="
+                border-radius: 16px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 60px 20px;
+              "
+            >
+              <div class="row">
+                <div
+                  class="col-lg-10 mx-auto gap-4 d-flex flex-column align-items-center"
+                >
+                  <p
+                    class="my-1 text-center text-uppercase"
+                    style="
+                      color: #fff;
+                      font-size: 18px;
+                      font-weight: 600;
+                      letter-spacing: 2px;
+                      margin-bottom: 0;
+                    "
+                  >
+                    Odoo 18.0 - Point of Sale Module
+                  </p>
+                  <h1
+                    class="text-center text-uppercase my-0"
+                    style="
+                      color: #fff;
+                      font-size: 48px;
+                      font-weight: 800;
+                      line-height: 1.2;
+                      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+                    "
+                  >
+                    Custom POS Receipt Design & Last Receipt
+                  </h1>
+                  <p
+                    class="text-center"
+                    style="
+                      color: #fff;
+                      font-size: 20px;
+                      font-weight: 400;
+                      max-width: 800px;
+                      margin-top: 20px;
+                    "
+                  >
+                    Enhance your Point of Sale experience with custom receipt
+                    designs and convenient last receipt printing functionality
+                  </p>
+                  <div
+                    class="d-flex gap-3 mt-3 flex-wrap justify-content-center"
+                  >
+                    <span
+                      class="badge"
+                      style="
+                        background-color: rgba(255, 255, 255, 0.2);
+                        color: #fff;
+                        font-size: 14px;
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                      "
+                    >
+                      <i class="fas fa-receipt me-2"></i>Multiple Receipt
+                      Designs
+                    </span>
+                    <span
+                      class="badge"
+                      style="
+                        background-color: rgba(255, 255, 255, 0.2);
+                        color: #fff;
+                        font-size: 14px;
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                      "
+                    >
+                      <i class="fas fa-print me-2"></i>One-Click Reprint
+                    </span>
+                    <span
+                      class="badge"
+                      style="
+                        background-color: rgba(255, 255, 255, 0.2);
+                        color: #fff;
+                        font-size: 14px;
+                        padding: 10px 20px;
+                        border-radius: 20px;
+                      "
+                    >
+                      <i class="fas fa-cog me-2"></i>Easy Configuration
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="tab-content" id="myTabContent">
-                <!-- description -->
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="position-relative"
-                        style="border-radius: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 20px;">
-                        <div class="row">
-                            <div class="col-lg-10 mx-auto gap-4 d-flex flex-column align-items-center">
-                                <p class="my-1 text-center text-uppercase" style="
-                                              color: #fff;
-                                              font-size: 18px;
-                                              font-weight: 600;
-                                              letter-spacing: 2px;
-                                              margin-bottom: 0;">
-                                    Odoo 18.0 - Point of Sale Module
+            <!-- key-highlight -->
+            <div
+              class="my-5"
+              style="
+                border-radius: 16px;
+                padding: 60px 40px;
+                border: 1px solid #ebeef2;
+                background: #f5f5f7;
+                box-shadow: 0px 5px 20px -11px rgba(0, 0, 0, 0.25);
+              "
+            >
+              <div class="row">
+                <div
+                  class="col-lg-12 d-flex flex-column justify-content-center align-items-center"
+                >
+                  <h2
+                    style="
+                      color: #121212;
+                      text-align: center;
+                      font-size: 40px;
+                      font-weight: 700;
+                      text-transform: uppercase;
+                      padding-bottom: 50px;
+                    "
+                  >
+                    Key Features
+                  </h2>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <div
+                    class="mb-4 d-flex flex-column justify-content-center gap-3"
+                    style="
+                      border-radius: 12px;
+                      border: 1px solid #b6bccd;
+                      background: #fff;
+                      padding: 32px;
+                      height: 100%;
+                    "
+                  >
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                      style="
+                        background-color: #7847d9 !important;
+                        border-radius: 8px !important;
+                        height: 42px;
+                        width: 42px;
+                      "
+                    >
+                      <i
+                        class="fas fa-receipt"
+                        style="color: #fff; font-size: 20px"
+                      ></i>
+                    </div>
+                    <h5
+                      class="m-0"
+                      style="color: #000 !important; font-weight: bold"
+                    >
+                      Multiple Receipt Designs
+                    </h5>
+                    <p
+                      class="m-0"
+                      style="
+                        font-size: 0.9rem;
+                        color: var(--text-color-light);
+                        font-size: 16px;
+                        font-weight: 400;
+                      "
+                    >
+                      Choose from pre-designed receipt templates to match your
+                      brand identity and business needs.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <div
+                    class="mb-4 d-flex flex-column justify-content-center gap-3"
+                    style="
+                      border-radius: 12px;
+                      border: 1px solid #b6bccd;
+                      background: #fff;
+                      padding: 32px;
+                      height: 100%;
+                    "
+                  >
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                      style="
+                        background-color: #7847d9 !important;
+                        border-radius: 8px !important;
+                        height: 42px;
+                        width: 42px;
+                      "
+                    >
+                      <i
+                        class="fas fa-paint-brush"
+                        style="color: #fff; font-size: 20px"
+                      ></i>
+                    </div>
+                    <h5
+                      class="m-0"
+                      style="color: #000 !important; font-weight: bold"
+                    >
+                      Custom Receipt Layouts
+                    </h5>
+                    <p
+                      class="m-0"
+                      style="
+                        font-size: 0.9rem;
+                        color: var(--text-color-light);
+                        font-size: 16px;
+                        font-weight: 400;
+                      "
+                    >
+                      Personalize receipt appearance and branding with
+                      easy-to-edit templates and designs.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <div
+                    class="mb-4 d-flex flex-column justify-content-center gap-3"
+                    style="
+                      border-radius: 12px;
+                      border: 1px solid #b6bccd;
+                      background: #fff;
+                      padding: 32px;
+                      height: 100%;
+                    "
+                  >
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                      style="
+                        background-color: #7847d9 !important;
+                        border-radius: 8px !important;
+                        height: 42px;
+                        width: 42px;
+                      "
+                    >
+                      <i
+                        class="fas fa-print"
+                        style="color: #fff; font-size: 20px"
+                      ></i>
+                    </div>
+                    <h5
+                      class="m-0"
+                      style="color: #000 !important; font-weight: bold"
+                    >
+                      Print Last Receipt
+                    </h5>
+                    <p
+                      class="m-0"
+                      style="
+                        font-size: 0.9rem;
+                        color: #64728f;
+                        font-size: 16px;
+                        font-weight: 400;
+                      "
+                    >
+                      One-click button to reprint the most recent receipt -
+                      perfect for customer requests.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <div
+                    class="mb-4 d-flex flex-column justify-content-center gap-3"
+                    style="
+                      border-radius: 12px;
+                      border: 1px solid #b6bccd;
+                      background: #fff;
+                      padding: 32px;
+                      height: 100%;
+                    "
+                  >
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                      style="
+                        background-color: #7847d9;
+                        border-radius: 8px !important;
+                        height: 42px;
+                        width: 42px;
+                      "
+                    >
+                      <i
+                        class="fas fa-search"
+                        style="color: #fff; font-size: 20px"
+                      ></i>
+                    </div>
+                    <h5
+                      class="m-0"
+                      style="color: #000 !important; font-weight: bold"
+                    >
+                      Smart Order Detection
+                    </h5>
+                    <p
+                      class="m-0"
+                      style="
+                        font-size: 0.9rem;
+                        color: #64728f;
+                        font-size: 16px;
+                        font-weight: 400;
+                      "
+                    >
+                      Automatically identifies the last paid order for accurate
+                      receipt reprinting.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <div
+                    class="mb-4 d-flex flex-column justify-content-center gap-3"
+                    style="
+                      border-radius: 12px;
+                      border: 1px solid #b6bccd;
+                      background: #fff;
+                      padding: 32px;
+                      height: 100%;
+                    "
+                  >
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                      style="
+                        background-color: #7847d9;
+                        border-radius: 8px !important;
+                        height: 42px;
+                        width: 42px;
+                      "
+                    >
+                      <i
+                        class="fas fa-check-circle"
+                        style="color: #fff; font-size: 20px"
+                      ></i>
+                    </div>
+                    <h5
+                      class="m-0"
+                      style="color: #000 !important; font-weight: bold"
+                    >
+                      Error Handling
+                    </h5>
+                    <p
+                      class="m-0"
+                      style="
+                        font-size: 0.9rem;
+                        color: #64728f;
+                        font-size: 16px;
+                        font-weight: 400;
+                      "
+                    >
+                      Clear notifications for success and error states ensure
+                      smooth operation.
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <div
+                    class="mb-4 d-flex flex-column justify-content-center gap-3"
+                    style="
+                      border-radius: 12px;
+                      border: 1px solid #b6bccd;
+                      background: #fff;
+                      padding: 32px;
+                      height: 100%;
+                    "
+                  >
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                      style="
+                        background-color: #7847d9;
+                        border-radius: 8px !important;
+                        height: 42px;
+                        width: 42px;
+                      "
+                    >
+                      <i
+                        class="fas fa-cog"
+                        style="color: #fff; font-size: 20px"
+                      ></i>
+                    </div>
+                    <h5
+                      class="m-0"
+                      style="color: #000 !important; font-weight: bold"
+                    >
+                      Easy Configuration
+                    </h5>
+                    <p
+                      class="m-0"
+                      style="
+                        font-size: 0.9rem;
+                        color: #64728f;
+                        font-size: 16px;
+                        font-weight: 400;
+                      "
+                    >
+                      Simple setup through POS configuration - no technical
+                      knowledge required.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Perfect for Section -->
+            <div
+              class="my-5"
+              style="
+                border-radius: 16px;
+                background: #fff;
+                padding: 60px 40px;
+                border: 1px solid #ebeef2;
+              "
+            >
+              <div class="row">
+                <div class="col-lg-12 text-center mb-4">
+                  <h2
+                    style="
+                      color: #121212;
+                      font-size: 40px;
+                      font-weight: 700;
+                      text-transform: uppercase;
+                    "
+                  >
+                    Perfect For
+                  </h2>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="text-center p-4">
+                    <div class="mb-3">
+                      <i
+                        class="fas fa-store"
+                        style="font-size: 48px; color: #7847d9"
+                      ></i>
+                    </div>
+                    <h5 style="font-weight: 600; color: #121212">
+                      Retail Stores
+                    </h5>
+                    <p style="color: #64728f; font-size: 14px">
+                      Needing branded receipts
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="text-center p-4">
+                    <div class="mb-3">
+                      <i
+                        class="fas fa-utensils"
+                        style="font-size: 48px; color: #7847d9"
+                      ></i>
+                    </div>
+                    <h5 style="font-weight: 600; color: #121212">
+                      Restaurants
+                    </h5>
+                    <p style="color: #64728f; font-size: 14px">
+                      Custom receipt requirements
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="text-center p-4">
+                    <div class="mb-3">
+                      <i
+                        class="fas fa-shopping-cart"
+                        style="font-size: 48px; color: #7847d9"
+                      ></i>
+                    </div>
+                    <h5 style="font-weight: 600; color: #121212">E-commerce</h5>
+                    <p style="color: #64728f; font-size: 14px">
+                      Requiring receipt reprints
+                    </p>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                  <div class="text-center p-4">
+                    <div class="mb-3">
+                      <i
+                        class="fas fa-cash-register"
+                        style="font-size: 48px; color: #7847d9"
+                      ></i>
+                    </div>
+                    <h5 style="font-weight: 600; color: #121212">
+                      Any POS Setup
+                    </h5>
+                    <p style="color: #64728f; font-size: 14px">
+                      Enhanced receipt functionality
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="my-5">
+              <div
+                class="position-relative"
+                style="
+                  padding: 5rem 4rem 5rem 4rem;
+                  background-color: #0a1425;
+                  border-radius: 12px;
+                "
+              >
+                <div class="d-flex flex-column gap-4">
+                  <span
+                    class="wrapper-subtitle"
+                    style="
+                      font-size: 40px;
+                      font-weight: 700;
+                      color: #fff;
+                      line-height: 60px;
+                      text-transform: capitalize;
+                      max-width: 600px;
+                    "
+                  >
+                    Custom POS Receipt Design & Last Receipt
+                  </span>
+                  <h3
+                    class="wrapper-details"
+                    style="
+                      font-size: 20px;
+                      font-weight: 400;
+                      color: #fff;
+                      line-height: 32px;
+                    "
+                  >
+                    Ready to enhance your POS experience?
+                    <br />
+                    Get started today!
+                  </h3>
+                  <div class="d-flex gap-3 flex-wrap">
+                    <a
+                      href="mailto:abdellghani37@gmail.com"
+                      class="shop-btn"
+                      style="
+                        cursor: pointer;
+                        border-radius: 16px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 7px;
+                        border: 1px solid #ffffff33;
+                        background-color: #ffffff14;
+                        backdrop-filter: blur(10px);
+                        color: #fff;
+                        padding: 12px 22px 12px 18px;
+                        text-decoration: none;
+                      "
+                    >
+                      <span
+                        style="
+                          border-radius: 12px;
+                          background-color: #ffffff1a;
+                          backdrop-filter: blur(6px);
+                          padding: 12px;
+                        "
+                      >
+                        <i class="fas fa-envelope" style="color: #fff"></i>
+                      </span>
+                      <span style="font-weight: 500; font-family: Montserrat"
+                        >Contact Us</span
+                      >
+                    </a>
+                  </div>
+                </div>
+                <div
+                  class="position-absolute bottom-0 end-0"
+                  style="opacity: 0.1"
+                >
+                  <i
+                    class="fas fa-receipt"
+                    style="font-size: 300px; color: #fff"
+                  ></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Installation Section -->
+            <div
+              class="my-5"
+              style="
+                border-radius: 16px;
+                background: #f8f9fa;
+                padding: 60px 40px;
+              "
+            >
+              <div class="row">
+                <div class="col-lg-6">
+                  <h2
+                    style="
+                      color: #121212;
+                      font-size: 36px;
+                      font-weight: 700;
+                      margin-bottom: 30px;
+                    "
+                  >
+                    <i class="fas fa-download me-3" style="color: #7847d9"></i
+                    >Installation
+                  </h2>
+                  <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-start gap-3">
+                      <span
+                        style="
+                          background-color: #7847d9;
+                          color: #fff;
+                          border-radius: 50%;
+                          width: 30px;
+                          height: 30px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-weight: bold;
+                          flex-shrink: 0;
+                        "
+                        >1</span
+                      >
+                      <p style="color: #64728f; font-size: 16px; margin: 0">
+                        Install the module from Odoo Apps
+                      </p>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                      <span
+                        style="
+                          background-color: #7847d9;
+                          color: #fff;
+                          border-radius: 50%;
+                          width: 30px;
+                          height: 30px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-weight: bold;
+                          flex-shrink: 0;
+                        "
+                        >2</span
+                      >
+                      <p style="color: #64728f; font-size: 16px; margin: 0">
+                        Configure receipt design in POS settings
+                      </p>
+                    </div>
+                    <div class="d-flex align-items-start gap-3">
+                      <span
+                        style="
+                          background-color: #7847d9;
+                          color: #fff;
+                          border-radius: 50%;
+                          width: 30px;
+                          height: 30px;
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          font-weight: bold;
+                          flex-shrink: 0;
+                        "
+                        >3</span
+                      >
+                      <p style="color: #64728f; font-size: 16px; margin: 0">
+                        Start using custom receipts and last receipt printing
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <h2
+                    style="
+                      color: #121212;
+                      font-size: 36px;
+                      font-weight: 700;
+                      margin-bottom: 30px;
+                    "
+                  >
+                    <i
+                      class="fas fa-info-circle me-3"
+                      style="color: #7847d9"
+                    ></i
+                    >Module Information
+                  </h2>
+                  <div class="d-flex flex-column gap-3">
+                    <div
+                      class="d-flex justify-content-between align-items-center p-3"
+                      style="background: #fff; border-radius: 8px"
+                    >
+                      <span style="color: #121212; font-weight: 600"
+                        >Version:</span
+                      >
+                      <span style="color: #64728f">18.0.1.0.0</span>
+                    </div>
+                    <div
+                      class="d-flex justify-content-between align-items-center p-3"
+                      style="background: #fff; border-radius: 8px"
+                    >
+                      <span style="color: #121212; font-weight: 600"
+                        >Category:</span
+                      >
+                      <span style="color: #64728f">Point of Sale</span>
+                    </div>
+                    <div
+                      class="d-flex justify-content-between align-items-center p-3"
+                      style="background: #fff; border-radius: 8px"
+                    >
+                      <span style="color: #121212; font-weight: 600"
+                        >Author:</span
+                      >
+                      <span style="color: #64728f">Abdelghani X</span>
+                    </div>
+                    <div
+                      class="d-flex justify-content-between align-items-center p-3"
+                      style="background: #fff; border-radius: 8px"
+                    >
+                      <span style="color: #121212; font-weight: 600"
+                        >License:</span
+                      >
+                      <span style="color: #64728f">OPL-1</span>
+                    </div>
+                    <div
+                      class="d-flex justify-content-between align-items-center p-3"
+                      style="background: #fff; border-radius: 8px"
+                    >
+                      <span style="color: #121212; font-weight: 600"
+                        >Price:</span
+                      >
+                      <span
+                        style="
+                          color: #7847d9;
+                          font-weight: 700;
+                          font-size: 18px;
+                        "
+                        >$29.99 USD</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- end-code -->
+            <!--  -->
+            <!-- screenshot and other -->
+
+            <div
+              class="mb-4 bg-white"
+              style="
+                border: 1px solid #ebeef2;
+                border-radius: 6px;
+                box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ebeef2;
+              "
+            >
+              <div>
+                <ul
+                  class="nav nav-tabs justify-content-center bg-white py-2"
+                  id="myTab"
+                  role="tablist"
+                  style="border-radius: 6px 6px 0 0"
+                >
+                  <li class="nav-item">
+                    <a
+                      aria-controls="overview"
+                      aria-bs-selected="true"
+                      class="nav-link active"
+                      data-bs-toggle="tab"
+                      href="#overview"
+                      id="overview-tab"
+                      role="tab"
+                      style="color: #121212; font-weight: 500; font-size: 16px"
+                    >
+                      Screenshots</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      aria-controls="feature"
+                      aria-bs-selected="false"
+                      class="nav-link py-2"
+                      data-bs-toggle="tab"
+                      href="#feature"
+                      id="feature-tab"
+                      role="tab"
+                      style="color: #121212; font-weight: 500; font-size: 16px"
+                      >Features</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      aria-controls="faq"
+                      aria-bs-selected="false"
+                      class="nav-link"
+                      data-bs-toggle="tab"
+                      href="#faq"
+                      id="faq-tab"
+                      role="tab"
+                      style="color: #121212; font-weight: 500; font-size: 16px"
+                    >
+                      FAQs</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="tab-content p-md-5 p-2 py-3" id="myTabContent">
+                <div
+                  aria-labelledby="overview-tab"
+                  class="tab-pane fade show active"
+                  id="overview"
+                  role="tabpanel"
+                >
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px"
+                  >
+                    <img
+                      alt="acc_bg"
+                      class="w-100 h-100 position-absolute img-fluid left_0"
+                      loading="lazy"
+                      src="//apps.odoocdn.com/apps/assets/17.0/ks_dashboard_ninja/ai-img/o3.png?007008f"
+                      style=""
+                    />
+                  </div>
+                  <!-- screenshots section-->
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Default Receipt of POS.
+                            </span>
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            This is the default receipt of POS.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt=""
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/1.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Receipt Designs
+                            </span>
+                            <span
+                              style="
+                                color: #7f54b3;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                            ></span>
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            We can add the receipt designs from the backend in
+                            the menu 'Receipt Designs'.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt=""
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/2.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Receipt Design
+                            </span>
+                            <span
+                              style="
+                                color: #7f54b3;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Template 1</span
+                            >
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            Example of a custom receipt design template with
+                            modern styling and branding options.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt="Receipt Design Template 1"
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/3.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Choose receipt design for POS.
+                            </span>
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            We can choose the receipt design for each POS from
+                            the backend of the POS.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt=""
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/4.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Edit receipt designs for POS.
+                            </span>
+                            <span
+                              style="
+                                color: #7f54b3;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                            ></span>
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            We can edit the receipt design from the backend of
+                            the POS.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt=""
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/5.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Chosen receipt in the
+                            </span>
+                            <span
+                              style="
+                                color: #7f54b3;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >frontend</span
+                            >
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            We can see the chosen receipts for the POS in the
+                            frontend of the POS.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt=""
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/6.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="position-relative mb-4"
+                    style="border-radius: 10px; background-color: #f4f4f4"
+                  >
+                    <div class="p-md-5 p-3 position-relative">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h1
+                            style="
+                              font-weight: bold;
+                              font-size: calc(1.1rem + 1vw);
+                              line-height: 120%;
+                              text-align: center;
+                              text-transform: capitalize;
+                              font-size: 40px;
+                              font-weight: 700;
+                            "
+                          >
+                            <span
+                              style="
+                                color: #121212;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Print Last
+                            </span>
+                            <span
+                              style="
+                                color: #7f54b3;
+                                font-size: calc(1.1rem + 1vw);
+                              "
+                              >Receipt Button</span
+                            >
+                          </h1>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                          <p
+                            style="
+                              font-weight: 400;
+                              font-size: 16px;
+                              line-height: 150%;
+                              text-align: center;
+                              color: var(--text-color-light);
+                            "
+                          >
+                            One-click button to instantly reprint the last
+                            receipt - perfect for customer requests and record
+                            keeping.
+                          </p>
+                        </div>
+                        <div class="col-md-12 text-center">
+                          <div
+                            class="d-inline-block p-3 shadow-sm"
+                            style="background-color: #fff; border-radius: 10px"
+                          >
+                            <img
+                              alt="Print Last Receipt Button"
+                              class="img-fluid"
+                              loading="lazy"
+                              src="./assets/screenshots/7.png"
+                              style="min-height: 1px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-labelledby="feature-tab"
+                  class="tab-pane fade show py-1"
+                  id="feature"
+                  role="tabpanel"
+                >
+                  <div class="row py-4">
+                    <!-- Features Section -->
+                    <div class="col-md-6 col-sm-12 p-3">
+                      <div
+                        class="d-flex flex-column align-items-start h-100"
+                        style="
+                          padding: 30px;
+                          border-radius: 12px;
+                          background-color: #faf8ff;
+                        "
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            class="d-flex align-items-center justify-content-center"
+                            style="
+                              width: 36px;
+                              height: 36px;
+                              border-radius: 50%;
+                              background-color: #7847d9;
+                              margin-right: 10px;
+                            "
+                          >
+                            <i
+                              class="fa fa-receipt"
+                              style="color: #fff; font-size: 14px"
+                            ></i>
+                          </div>
+                          <p
+                            style="
+                              color: #1a202c;
+                              font-weight: 600;
+                              font-size: 1.2rem;
+                              margin-bottom: 2px;
+                            "
+                          >
+                            Multiple Receipt Designs
+                          </p>
+                        </div>
+                        <div class="ms-5">
+                          <p class="m-0" style="color: #718096">
+                            Choose from pre-designed receipt templates to match
+                            your brand identity. Create and manage multiple
+                            receipt designs from the backend menu.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-3">
+                      <div
+                        class="d-flex flex-column align-items-start h-100"
+                        style="
+                          padding: 30px;
+                          border-radius: 12px;
+                          background-color: #faf8ff;
+                        "
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            class="d-flex align-items-center justify-content-center"
+                            style="
+                              width: 36px;
+                              height: 36px;
+                              border-radius: 50%;
+                              background-color: #7847d9;
+                              margin-right: 10px;
+                            "
+                          >
+                            <i
+                              class="fa fa-print"
+                              style="color: #fff; font-size: 14px"
+                            ></i>
+                          </div>
+                          <p
+                            style="
+                              color: #1a202c;
+                              font-weight: 600;
+                              font-size: 1.2rem;
+                              margin-bottom: 2px;
+                            "
+                          >
+                            Print Last Receipt
+                          </p>
+                        </div>
+                        <div class="ms-5">
+                          <p class="m-0" style="color: #718096">
+                            One-click button to reprint the most recent receipt.
+                            Smart order detection automatically identifies the
+                            last paid transaction for accurate reprinting.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-3">
+                      <div
+                        class="d-flex flex-column align-items-start h-100"
+                        style="
+                          padding: 30px;
+                          border-radius: 12px;
+                          background-color: #faf8ff;
+                        "
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            class="d-flex align-items-center justify-content-center"
+                            style="
+                              width: 36px;
+                              height: 36px;
+                              border-radius: 50%;
+                              background-color: #7847d9;
+                              margin-right: 10px;
+                            "
+                          >
+                            <i
+                              class="fa fa-cog"
+                              style="color: #fff; font-size: 14px"
+                            ></i>
+                          </div>
+                          <p
+                            style="
+                              color: #1a202c;
+                              font-weight: 600;
+                              font-size: 1.2rem;
+                              margin-bottom: 2px;
+                            "
+                          >
+                            Easy POS Configuration
+                          </p>
+                        </div>
+                        <div class="ms-5">
+                          <p class="m-0" style="color: #718096">
+                            Simple setup through POS configuration interface.
+                            Choose custom receipt designs for each POS location
+                            without technical knowledge.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-3">
+                      <div
+                        class="d-flex flex-column align-items-start h-100"
+                        style="
+                          padding: 30px;
+                          border-radius: 12px;
+                          background-color: #faf8ff;
+                        "
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            class="d-flex align-items-center justify-content-center"
+                            style="
+                              width: 36px;
+                              height: 36px;
+                              border-radius: 50%;
+                              background-color: #7847d9;
+                              margin-right: 10px;
+                            "
+                          >
+                            <i
+                              class="fa fa-edit"
+                              style="color: #fff; font-size: 14px"
+                            ></i>
+                          </div>
+                          <p
+                            style="
+                              color: #1a202c;
+                              font-weight: 600;
+                              font-size: 1.2rem;
+                              margin-bottom: 2px;
+                            "
+                          >
+                            Customizable Receipt Layouts
+                          </p>
+                        </div>
+                        <div class="ms-5">
+                          <p class="m-0" style="color: #718096">
+                            Edit and customize receipt designs from the backend.
+                            Personalize appearance, branding, and layout to
+                            match your business needs.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-3">
+                      <div
+                        class="d-flex flex-column align-items-start h-100"
+                        style="
+                          padding: 30px;
+                          border-radius: 12px;
+                          background-color: #faf8ff;
+                        "
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            class="d-flex align-items-center justify-content-center"
+                            style="
+                              width: 36px;
+                              height: 36px;
+                              border-radius: 50%;
+                              background-color: #7847d9;
+                              margin-right: 10px;
+                            "
+                          >
+                            <i
+                              class="fa fa-desktop"
+                              style="color: #fff; font-size: 14px"
+                            ></i>
+                          </div>
+                          <p
+                            style="
+                              color: #1a202c;
+                              font-weight: 600;
+                              font-size: 1.2rem;
+                              margin-bottom: 2px;
+                            "
+                          >
+                            Frontend Receipt Selection
+                          </p>
+                        </div>
+                        <div class="ms-5">
+                          <p class="m-0" style="color: #718096">
+                            View and use the chosen receipt designs directly
+                            from the POS interface. Seamless integration with
+                            your existing POS workflow.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 p-3">
+                      <div
+                        class="d-flex flex-column align-items-start h-100"
+                        style="
+                          padding: 30px;
+                          border-radius: 12px;
+                          background-color: #faf8ff;
+                        "
+                      >
+                        <div
+                          class="d-flex align-items-center justify-content-center"
+                        >
+                          <div
+                            class="d-flex align-items-center justify-content-center"
+                            style="
+                              width: 36px;
+                              height: 36px;
+                              border-radius: 50%;
+                              background-color: #7847d9;
+                              margin-right: 10px;
+                            "
+                          >
+                            <i
+                              class="fa fa-check-circle"
+                              style="color: #fff; font-size: 14px"
+                            ></i>
+                          </div>
+                          <p
+                            style="
+                              color: #1a202c;
+                              font-weight: 600;
+                              font-size: 1.2rem;
+                              margin-bottom: 2px;
+                            "
+                          >
+                            Error Handling & Notifications
+                          </p>
+                        </div>
+                        <div class="ms-5">
+                          <p class="m-0" style="color: #718096">
+                            Clear success and error notifications ensure smooth
+                            operation. Built-in validation prevents printing
+                            errors and ensures reliability.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-labelledby="faq-tab"
+                  class="tab-pane fade show"
+                  id="faq"
+                  role="tabpanel"
+                >
+                  <div class="row" style="background-color: #fff !important">
+                    <div
+                      class="col-md-12"
+                      aria-labelledby="faq-tab"
+                      id="faq"
+                      role="tabpanel"
+                    >
+                      <div class="accordion mb-4" id="accordion6">
+                        <div style="background-color: #fff">
+                          <!-- accordian -->
+                          <div class="accordion" id="accordion_faq">
+                            <!-- Question 1 -->
+                            <div class="" style="margin: 1rem 0rem">
+                              <div
+                                aria-expanded="false"
+                                class="card-header collapsed"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseFAQOne"
+                                href="#collapseFAQOne"
+                                aria-controls="collapseFAQOne"
+                                style="
+                                  cursor: pointer;
+                                  background-color: #f8f8f8;
+                                  border: none;
+                                  border-top-right-radius: 10px;
+                                  border-top-left-radius: 10px;
+                                  padding: 12px 24px;
+                                "
+                              >
+                                <a
+                                  class="card-title text-decoration-none"
+                                  style="
+                                    font-size: 18px;
+                                    line-height: 30px;
+                                    font-weight: 500;
+                                    color: #040f3a;
+                                  "
+                                >
+                                  Can I apply different receipt designs to
+                                  different POS locations?
+                                  <img
+                                    alt=""
+                                    class="float-end"
+                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
+                                    width="25px"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                class="accordion-collapse collapse"
+                                aria-labelledby="collapseFAQOne"
+                                data-bs-parent="#accordion_faq"
+                                id="collapseFAQOne"
+                                style="
+                                  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px
+                                    0px;
+                                  border: 1px solid #f8f8f8;
+                                  border-bottom-right-radius: 10px;
+                                  border-bottom-left-radius: 10px;
+                                "
+                              >
+                                <p
+                                  style="
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 16px;
+                                    line-height: 27px;
+                                    color: #888;
+                                    font-weight: normal;
+                                    border-bottom-right-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                  "
+                                >
+                                  Yes, absolutely! Each POS location can have
+                                  its own custom receipt design. When setting up
+                                  each POS, you can choose a specific receipt
+                                  design for that location, allowing you to
+                                  maintain consistent branding across different
+                                  stores or customize for specific needs.
                                 </p>
-                                <h1 class="text-center text-uppercase my-0" style="
-                                              color: #fff;
-                                              font-size: 48px;
-                                              font-weight: 800;
-                                              line-height: 1.2;
-                                              text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">
-                                    Custom POS Receipt Design & Last Receipt
-                                </h1>
-                                <p class="text-center"
-                                    style="color: #fff; font-size: 20px; font-weight: 400; max-width: 800px; margin-top: 20px;">
-                                    Enhance your Point of Sale experience with custom receipt designs and convenient
-                                    last receipt printing functionality
+                              </div>
+                            </div>
+                            <!-- Question 2 -->
+                            <div style="margin: 1rem 0rem">
+                              <div
+                                aria-expanded="false"
+                                class="cursor-pointer card-header collapsed"
+                                data-bs-toggle="collapse"
+                                aria-controls="collapseFAQTwo"
+                                data-bs-target="#collapseFAQTwo"
+                                style="
+                                  cursor: pointer;
+                                  background-color: #f8f8f8;
+                                  border: 1px solid #f8f8f8;
+                                  border-top-right-radius: 10px;
+                                  border-top-left-radius: 10px;
+                                  padding: 12px 24px;
+                                "
+                              >
+                                <a
+                                  class="card-title text-decoration-none"
+                                  style="
+                                    font-size: 18px;
+                                    line-height: 30px;
+                                    font-weight: 500;
+                                    color: #040f3a;
+                                  "
+                                >
+                                  How does the "Print Last Receipt" feature
+                                  work?
+                                  <img
+                                    alt=""
+                                    class="float-end"
+                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
+                                    width="25px"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                class="accordion-collapse collapse"
+                                aria-labelledby="collapseFAQTwo"
+                                data-bs-parent="#accordion_faq"
+                                id="collapseFAQTwo"
+                                style="
+                                  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px
+                                    0px;
+                                  border: 1px solid #f8f8f8;
+                                  border-bottom-right-radius: 10px;
+                                  border-bottom-left-radius: 10px;
+                                "
+                              >
+                                <p
+                                  style="
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 16px;
+                                    line-height: 27px;
+                                    color: #888;
+                                    font-weight: normal;
+                                    border-bottom-right-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                  "
+                                >
+                                  The Print Last Receipt feature automatically
+                                  detects the most recent paid order in your
+                                  current POS session. Simply click the "Print
+                                  Last Receipt" button and the system will
+                                  instantly reprint the last transaction
+                                  receipt. This is perfect when customers
+                                  request a duplicate receipt or for record
+                                  keeping.
                                 </p>
-                                <div class="d-flex gap-3 mt-3 flex-wrap justify-content-center">
-                                    <span class="badge"
-                                        style="background-color: rgba(255,255,255,0.2); color: #fff; font-size: 14px; padding: 10px 20px; border-radius: 20px;">
-                                        <i class="fas fa-receipt me-2"></i>Multiple Receipt Designs
-                                    </span>
-                                    <span class="badge"
-                                        style="background-color: rgba(255,255,255,0.2); color: #fff; font-size: 14px; padding: 10px 20px; border-radius: 20px;">
-                                        <i class="fas fa-print me-2"></i>One-Click Reprint
-                                    </span>
-                                    <span class="badge"
-                                        style="background-color: rgba(255,255,255,0.2); color: #fff; font-size: 14px; padding: 10px 20px; border-radius: 20px;">
-                                        <i class="fas fa-cog me-2"></i>Easy Configuration
-                                    </span>
-                                </div>
+                              </div>
                             </div>
+                            <!-- Question 3 -->
+                            <div style="margin: 1rem 0rem">
+                              <div
+                                aria-expanded="false"
+                                class="cursor-pointer card-header collapsed"
+                                data-bs-toggle="collapse"
+                                aria-controls="collapseFAQThree"
+                                data-bs-target="#collapseFAQThree"
+                                style="
+                                  cursor: pointer;
+                                  background-color: #f8f8f8;
+                                  border: 1px solid #f8f8f8;
+                                  border-top-right-radius: 10px;
+                                  border-top-left-radius: 10px;
+                                  padding: 12px 24px;
+                                "
+                              >
+                                <a
+                                  class="card-title text-decoration-none"
+                                  style="
+                                    font-size: 18px;
+                                    line-height: 30px;
+                                    font-weight: 500;
+                                    color: #040f3a;
+                                  "
+                                >
+                                  Is it possible to edit receipt designs without
+                                  affecting POS operations?
+                                  <img
+                                    alt=""
+                                    class="float-end"
+                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
+                                    width="25px"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                class="accordion-collapse collapse"
+                                aria-labelledby="collapseFAQThree"
+                                data-bs-parent="#accordion_faq"
+                                id="collapseFAQThree"
+                                style="
+                                  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px
+                                    0px;
+                                  border: 1px solid #f8f8f8;
+                                  border-bottom-right-radius: 10px;
+                                  border-bottom-left-radius: 10px;
+                                "
+                              >
+                                <p
+                                  style="
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 16px;
+                                    line-height: 27px;
+                                    color: #888;
+                                    font-weight: normal;
+                                    border-bottom-right-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                  "
+                                >
+                                  Yes, you can edit receipt designs in the
+                                  backend without interrupting POS operations.
+                                  Changes are applied only after the design is
+                                  saved and the POS is refreshed, allowing
+                                  seamless updates and customizations without
+                                  disrupting your sales workflow.
+                                </p>
+                              </div>
+                            </div>
+                            <!-- Question 4 -->
+                            <div style="margin: 1rem 0rem">
+                              <div
+                                aria-expanded="false"
+                                class="cursor-pointer card-header collapsed"
+                                data-bs-toggle="collapse"
+                                aria-controls="collapseFAQFour"
+                                data-bs-target="#collapseFAQFour"
+                                style="
+                                  cursor: pointer;
+                                  background-color: #f8f8f8;
+                                  border: 1px solid #f8f8f8;
+                                  border-top-right-radius: 10px;
+                                  border-top-left-radius: 10px;
+                                  padding: 12px 24px;
+                                "
+                              >
+                                <a
+                                  class="card-title text-decoration-none"
+                                  style="
+                                    font-size: 18px;
+                                    line-height: 30px;
+                                    font-weight: 500;
+                                    color: #040f3a;
+                                  "
+                                >
+                                  Can I preview the receipt design before
+                                  applying it?
+                                  <img
+                                    alt=""
+                                    class="float-end"
+                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
+                                    width="25px"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                class="accordion-collapse collapse"
+                                aria-labelledby="collapseFAQFour"
+                                data-bs-parent="#accordion_faq"
+                                id="collapseFAQFour"
+                                style="
+                                  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px
+                                    0px;
+                                  border: 1px solid #f8f8f8;
+                                  border-bottom-right-radius: 10px;
+                                  border-bottom-left-radius: 10px;
+                                "
+                              >
+                                <p
+                                  style="
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 16px;
+                                    line-height: 27px;
+                                    color: #888;
+                                    font-weight: normal;
+                                    border-bottom-right-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                  "
+                                >
+                                  You can test the design by selecting it in the
+                                  backend and processing a test transaction or
+                                  using the print last receipt feature to see
+                                  how the design looks in practice. We recommend
+                                  testing new designs in a non-production
+                                  environment first.
+                                </p>
+                              </div>
+                            </div>
+                            <!-- Question 5 -->
+                            <div style="margin: 1rem 0rem">
+                              <div
+                                aria-expanded="false"
+                                class="cursor-pointer card-header collapsed"
+                                data-bs-toggle="collapse"
+                                aria-controls="collapseFAQFive"
+                                data-bs-target="#collapseFAQFive"
+                                style="
+                                  cursor: pointer;
+                                  background-color: #f8f8f8;
+                                  border: 1px solid #f8f8f8;
+                                  border-top-right-radius: 10px;
+                                  border-top-left-radius: 10px;
+                                  padding: 12px 24px;
+                                "
+                              >
+                                <a
+                                  class="card-title text-decoration-none"
+                                  style="
+                                    font-size: 18px;
+                                    line-height: 30px;
+                                    font-weight: 500;
+                                    color: #040f3a;
+                                  "
+                                >
+                                  Does this module work with thermal printers?
+                                  <img
+                                    alt=""
+                                    class="float-end"
+                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
+                                    width="25px"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                class="accordion-collapse collapse"
+                                aria-labelledby="collapseFAQFive"
+                                data-bs-parent="#accordion_faq"
+                                id="collapseFAQFive"
+                                style="
+                                  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px
+                                    0px;
+                                  border: 1px solid #f8f8f8;
+                                  border-bottom-right-radius: 10px;
+                                  border-bottom-left-radius: 10px;
+                                "
+                              >
+                                <p
+                                  style="
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 16px;
+                                    line-height: 27px;
+                                    color: #888;
+                                    font-weight: normal;
+                                    border-bottom-right-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                  "
+                                >
+                                  Yes! This module is fully compatible with
+                                  thermal printers and all standard POS receipt
+                                  printers supported by Odoo. The custom receipt
+                                  designs are optimized for various printer
+                                  types and paper sizes.
+                                </p>
+                              </div>
+                            </div>
+                            <!-- Question 6 -->
+                            <div style="margin: 1rem 0rem">
+                              <div
+                                aria-expanded="false"
+                                class="cursor-pointer card-header collapsed"
+                                data-bs-toggle="collapse"
+                                aria-controls="collapseFAQSix"
+                                data-bs-target="#collapseFAQSix"
+                                style="
+                                  cursor: pointer;
+                                  background-color: #f8f8f8;
+                                  border: 1px solid #f8f8f8;
+                                  border-top-right-radius: 10px;
+                                  border-top-left-radius: 10px;
+                                  padding: 12px 24px;
+                                "
+                              >
+                                <a
+                                  class="card-title text-decoration-none"
+                                  style="
+                                    font-size: 18px;
+                                    line-height: 30px;
+                                    font-weight: 500;
+                                    color: #040f3a;
+                                  "
+                                >
+                                  What happens if there's no last receipt to
+                                  print?
+                                  <img
+                                    alt=""
+                                    class="float-end"
+                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
+                                    width="25px"
+                                  />
+                                </a>
+                              </div>
+                              <div
+                                class="accordion-collapse collapse"
+                                aria-labelledby="collapseFAQSix"
+                                data-bs-parent="#accordion_faq"
+                                id="collapseFAQSix"
+                                style="
+                                  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px
+                                    0px;
+                                  border: 1px solid #f8f8f8;
+                                  border-bottom-right-radius: 10px;
+                                  border-bottom-left-radius: 10px;
+                                "
+                              >
+                                <p
+                                  style="
+                                    padding: 0.75rem 1.25rem;
+                                    font-size: 16px;
+                                    line-height: 27px;
+                                    color: #888;
+                                    font-weight: normal;
+                                    border-bottom-right-radius: 10px;
+                                    border-bottom-left-radius: 10px;
+                                  "
+                                >
+                                  The module includes smart error handling. If
+                                  there's no previous paid order in the current
+                                  session, the system will display a clear
+                                  notification message informing you that no
+                                  receipt is available to print. This prevents
+                                  confusion and ensures a smooth user
+                                  experience.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                          <!--  -->
                         </div>
+                      </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--  -->
 
-
-
-                    <!-- key-highlight -->
-                    <div class="my-5" style="border-radius: 16px;
-     padding: 60px 40px;
-     border: 1px solid #EBEEF2;
-     background: #F5F5F7;
-     box-shadow: 0px 5px 20px -11px rgba(0, 0, 0, 0.25); ">
-                        <div class="row">
-                            <div class="col-lg-12 d-flex flex-column justify-content-center align-items-center">
-                                <h2 style=" color: #121212;
-            text-align: center;
-            font-size: 40px;
-            font-weight: 700;
-            text-transform: uppercase; padding-bottom: 50px;">Key Features</h2>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px; border: 1px solid  #B6BCCD;
-            background:  #FFF;padding:32px; height: 100%;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color:#7847D9 !important; border-radius:8px !important; height:42px; width:42px">
-                                        <i class="fas fa-receipt" style="color: #fff; font-size: 20px;"></i>
-                                    </div>
-                                    <h5 class="m-0" style="color:#000 !important; font-weight:bold">
-                                        Multiple Receipt Designs
-                                    </h5>
-                                    <p class="m-0"
-                                        style="font-size:0.9rem; color:var(--text-color-light); font-size: 16px; font-weight: 400;">
-                                        Choose from pre-designed receipt templates to match your brand identity and
-                                        business needs.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px;
-          border: 1px solid  #B6BCCD;
-          background:  #FFF;padding:32px; height: 100%;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color:#7847D9 !important; border-radius:8px !important; height:42px; width:42px">
-                                        <i class="fas fa-paint-brush" style="color: #fff; font-size: 20px;"></i>
-                                    </div>
-                                    <h5 class="m-0" style="color:#000 !important; font-weight:bold">
-                                        Custom Receipt Layouts
-                                    </h5>
-                                    <p class="m-0"
-                                        style="font-size:0.9rem; color:var(--text-color-light); font-size: 16px; font-weight: 400;">
-                                        Personalize receipt appearance and branding with easy-to-edit templates and
-                                        designs.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px;
-             border: 1px solid  #B6BCCD;
-             background:  #FFF;padding:32px; height: 100%;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color:#7847D9 !important; border-radius:8px !important; height:42px; width:42px">
-                                        <i class="fas fa-print" style="color: #fff; font-size: 20px;"></i>
-                                    </div>
-                                    <h5 class="m-0" style="color:#000 !important; font-weight:bold">
-                                        Print Last Receipt
-                                    </h5>
-                                    <p class="m-0"
-                                        style="font-size:0.9rem; color:#64728f; font-size: 16px; font-weight: 400;">
-                                        One-click button to reprint the most recent receipt - perfect for customer
-                                        requests.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px;
-          border: 1px solid  #B6BCCD;
-          background:  #FFF;padding:32px; height: 100%;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color:#7847D9; border-radius:8px !important; height:42px; width:42px">
-                                        <i class="fas fa-search" style="color: #fff; font-size: 20px;"></i>
-                                    </div>
-                                    <h5 class="m-0" style="color:#000 !important; font-weight:bold">
-                                        Smart Order Detection
-                                    </h5>
-                                    <p class="m-0"
-                                        style="font-size:0.9rem; color:#64728f; font-size: 16px; font-weight: 400;">
-                                        Automatically identifies the last paid order for accurate receipt reprinting.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px;
-          border: 1px solid  #B6BCCD;
-          background:  #FFF;padding:32px; height: 100%;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color:#7847D9; border-radius:8px !important; height:42px; width:42px">
-                                        <i class="fas fa-check-circle" style="color: #fff; font-size: 20px;"></i>
-                                    </div>
-                                    <h5 class="m-0" style="color:#000 !important; font-weight:bold">
-                                        Error Handling
-                                    </h5>
-                                    <p class="m-0"
-                                        style="font-size:0.9rem; color:#64728f; font-size: 16px; font-weight: 400;">
-                                        Clear notifications for success and error states ensure smooth operation.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="mb-4 d-flex flex-column justify-content-center gap-3" style="border-radius: 12px;
-          border: 1px solid  #B6BCCD;
-          background:  #FFF;padding:32px; height: 100%;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style="background-color:#7847D9; border-radius:8px !important; height:42px; width:42px">
-                                        <i class="fas fa-cog" style="color: #fff; font-size: 20px;"></i>
-                                    </div>
-                                    <h5 class="m-0" style="color:#000 !important; font-weight:bold">
-                                        Easy Configuration
-                                    </h5>
-                                    <p class="m-0"
-                                        style="font-size:0.9rem; color:#64728f; font-size: 16px; font-weight: 400;">
-                                        Simple setup through POS configuration - no technical knowledge required.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Perfect for Section -->
-                    <div class="my-5"
-                        style="border-radius: 16px; background: #fff; padding: 60px 40px; border: 1px solid #EBEEF2;">
-                        <div class="row">
-                            <div class="col-lg-12 text-center mb-4">
-                                <h2
-                                    style="color: #121212; font-size: 40px; font-weight: 700; text-transform: uppercase;">
-                                    Perfect For</h2>
-                            </div>
-                            <div class="col-lg-3 col-md-6 mb-4">
-                                <div class="text-center p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-store" style="font-size: 48px; color: #7847D9;"></i>
-                                    </div>
-                                    <h5 style="font-weight: 600; color: #121212;">Retail Stores</h5>
-                                    <p style="color: #64728f; font-size: 14px;">Needing branded receipts</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 mb-4">
-                                <div class="text-center p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-utensils" style="font-size: 48px; color: #7847D9;"></i>
-                                    </div>
-                                    <h5 style="font-weight: 600; color: #121212;">Restaurants</h5>
-                                    <p style="color: #64728f; font-size: 14px;">Custom receipt requirements</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 mb-4">
-                                <div class="text-center p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-shopping-cart" style="font-size: 48px; color: #7847D9;"></i>
-                                    </div>
-                                    <h5 style="font-weight: 600; color: #121212;">E-commerce</h5>
-                                    <p style="color: #64728f; font-size: 14px;">Requiring receipt reprints</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-md-6 mb-4">
-                                <div class="text-center p-4">
-                                    <div class="mb-3">
-                                        <i class="fas fa-cash-register" style="font-size: 48px; color: #7847D9;"></i>
-                                    </div>
-                                    <h5 style="font-weight: 600; color: #121212;">Any POS Setup</h5>
-                                    <p style="color: #64728f; font-size: 14px;">Enhanced receipt functionality</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Contact Section -->
-                    <div class="my-5">
-                        <div class="position-relative"
-                            style="padding: 5rem 4rem 5rem 4rem; background-color: #0A1425; border-radius: 12px;">
-                            <div class="d-flex flex-column gap-4">
-                                <span class="wrapper-subtitle"
-                                    style="font-size: 40px; font-weight: 700; color: #fff;line-height: 60px; text-transform: capitalize; max-width: 600px;">
-                                    Custom POS Receipt Design & Last Receipt
-                                </span>
-                                <h3 class="wrapper-details"
-                                    style="font-size: 20px; font-weight: 400; color: #fff; line-height: 32px;">
-                                    Ready to enhance your POS experience?
-                                    <br> Get started today!
-                                </h3>
-                                <div class="d-flex gap-3 flex-wrap">
-                                    <a href="https://www.AbdelghaniX.com" target="_blank" class="shop-btn" style="cursor: pointer; border-radius: 16px; display: flex; justify-content: center; align-items: center; gap: 7px;
-            border: 1px solid  #ffffff33;
-            background-color: #ffffff14;
-            backdrop-filter: blur(10px); color: #fff; padding: 12px 16px 12px 16px; text-decoration: none;">
-                                        <span style="border-radius: 12px;
-             background-color: #ffffff1a;
-             backdrop-filter: blur(6px);padding: 12px;">
-                                            <i class="fas fa-globe" style="color: #fff;"></i>
-                                        </span>
-                                        <span
-                                            style="font-weight: 500;font-family: Montserrat;">www.AbdelghaniX.com</span>
-                                    </a>
-                                    <a href="mailto:contact@abdelghanix.com" class="shop-btn" style="cursor: pointer; border-radius: 16px; display: flex; justify-content: center; align-items: center; gap: 7px;
-             border: 1px solid  #ffffff33;
-             background-color: #ffffff14;
-            backdrop-filter: blur(10px); color: #fff; padding: 12px 22px 12px 18px; text-decoration: none;">
-                                        <span style="border-radius: 12px;
-             background-color: #ffffff1a;
-             backdrop-filter: blur(6px);padding: 12px;">
-                                            <i class="fas fa-envelope" style="color: #fff;"></i>
-                                        </span>
-                                        <span style="font-weight: 500;font-family: Montserrat;">Contact Us</span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="position-absolute bottom-0 end-0" style="opacity: 0.1;">
-                                <i class="fas fa-receipt" style="font-size: 300px; color: #fff;"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Installation Section -->
-                    <div class="my-5" style="border-radius: 16px; background: #F8F9FA; padding: 60px 40px;">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <h2 style="color: #121212; font-size: 36px; font-weight: 700; margin-bottom: 30px;">
-                                    <i class="fas fa-download me-3" style="color: #7847D9;"></i>Installation
-                                </h2>
-                                <div class="d-flex flex-column gap-3">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <span
-                                            style="background-color: #7847D9; color: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">1</span>
-                                        <p style="color: #64728f; font-size: 16px; margin: 0;">Install the module from
-                                            Odoo Apps</p>
-                                    </div>
-                                    <div class="d-flex align-items-start gap-3">
-                                        <span
-                                            style="background-color: #7847D9; color: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">2</span>
-                                        <p style="color: #64728f; font-size: 16px; margin: 0;">Configure receipt design
-                                            in POS settings</p>
-                                    </div>
-                                    <div class="d-flex align-items-start gap-3">
-                                        <span
-                                            style="background-color: #7847D9; color: #fff; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">3</span>
-                                        <p style="color: #64728f; font-size: 16px; margin: 0;">Start using custom
-                                            receipts and last receipt printing</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <h2 style="color: #121212; font-size: 36px; font-weight: 700; margin-bottom: 30px;">
-                                    <i class="fas fa-info-circle me-3" style="color: #7847D9;"></i>Module Information
-                                </h2>
-                                <div class="d-flex flex-column gap-3">
-                                    <div class="d-flex justify-content-between align-items-center p-3"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <span style="color: #121212; font-weight: 600;">Version:</span>
-                                        <span style="color: #64728f;">18.0.1.0.0</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center p-3"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <span style="color: #121212; font-weight: 600;">Category:</span>
-                                        <span style="color: #64728f;">Point of Sale</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center p-3"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <span style="color: #121212; font-weight: 600;">Author:</span>
-                                        <span style="color: #64728f;">Abdelghani X</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center p-3"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <span style="color: #121212; font-weight: 600;">License:</span>
-                                        <span style="color: #64728f;">OPL-1</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center p-3"
-                                        style="background: #fff; border-radius: 8px;">
-                                        <span style="color: #121212; font-weight: 600;">Price:</span>
-                                        <span style="color: #7847D9; font-weight: 700; font-size: 18px;">$29.99
-                                            USD</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- end-code -->
-                    <!--  -->
-                    <!-- screenshot and other -->
-
-                    <div class="mb-4 bg-white"
-                        style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
-                        <div>
-                            <ul class="nav nav-tabs justify-content-center bg-white py-2" id="myTab" role="tablist"
-                                style="border-radius: 6px 6px 0 0;">
-                                <li class="nav-item">
-                                    <a aria-controls="overview" aria-bs-selected="true" class="nav-link active"
-                                        data-bs-toggle="tab" href="#overview" id="overview-tab" role="tab"
-                                        style="color:#121212; font-weight:500; font-size:16px">
-                                        Screenshots</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a aria-controls="feature" aria-bs-selected="false" class="nav-link py-2"
-                                        data-bs-toggle="tab" href="#feature" id="feature-tab" role="tab"
-                                        style="color:#121212; font-weight:500; font-size:16px">Features</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a aria-controls="faq" aria-bs-selected="false" class="nav-link"
-                                        data-bs-toggle="tab" href="#faq" id="faq-tab" role="tab"
-                                        style="color:#121212; font-weight:500; font-size:16px">
-                                        FAQs</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a aria-controls="releases" aria-bs-selected="false" class="nav-link"
-                                        data-bs-toggle="tab" href="#releases" id="releases-tab" role="tab"
-                                        style="color:#121212; font-weight:500; font-size:16px">Releases</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content p-md-5 p-2 py-3" id="myTabContent">
-                            <div aria-labelledby="overview-tab" class="tab-pane fade show active" id="overview"
-                                role="tabpanel">
-                                <div class="position-relative mb-4" style="border-radius:10px">
-                                    <img alt="acc_bg" class="w-100 h-100 position-absolute img-fluid left_0"
-                                        loading="lazy"
-                                        src="//apps.odoocdn.com/apps/assets/17.0/ks_dashboard_ninja/ai-img/o3.png?007008f"
-                                        style="">
-                                </div>
-                                <!-- screenshots section-->
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">Default
-                                                        Receipt of POS.
-                                                    </span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-                                                    This is the default receipt of
-                                                    POS.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/1.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">Receipt
-                                                        Designs
-                                                    </span>
-                                                    <span style="color: #7f54b3; font-size:calc(1.1rem + 1vw)"></span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-                                                    We can add the receipt designs
-                                                    from the backend in the menu
-                                                    'Receipt Designs'.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/2.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">
-                                                    </span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/3.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">Choose
-                                                        receipt design for POS.
-                                                    </span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-                                                    We can choose the receipt design
-                                                    for each POS from the backend of
-                                                    the POS.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/4.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">Edit
-                                                        receipt designs for POS.
-                                                    </span>
-                                                    <span style="color: #7f54b3; font-size:calc(1.1rem + 1vw)"></span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-                                                    We can edit the receipt design
-                                                    from the backend of the POS.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/5.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">Chosen
-                                                        receipt in the
-                                                    </span>
-                                                    <span
-                                                        style="color: #7f54b3; font-size:calc(1.1rem + 1vw)">frontend</span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-                                                    We can see the chosen receipts
-                                                    for the POS in the frontend of
-                                                    the POS.
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/6.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="position-relative mb-4"
-                                    style="border-radius:10px; background-color:#f4f4f4">
-                                    <div class="p-md-5 p-3 position-relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <h1 style="font-weight:bold; font-size:calc(1.1rem + 1vw); line-height:120%; text-align:center; text-transform:capitalize; font-size: 40px;
-                              font-weight: 700;">
-                                                    <span style="color:#121212; font-size:calc(1.1rem + 1vw)">
-                                                    </span>
-                                                </h1>
-                                            </div>
-                                            <div class="col-md-12 mb-4">
-                                                <p
-                                                    style="font-weight:400; font-size:16px; line-height:150%; text-align:center;  color:var(--text-color-light)">
-
-                                                </p>
-                                            </div>
-                                            <div class="col-md-12 text-center">
-                                                <div class="d-inline-block p-3 shadow-sm"
-                                                    style="background-color:#fff; border-radius:10px">
-                                                    <img alt="" class="img-fluid" loading="lazy"
-                                                        src="./assets/screenshots/7.png" style="min-height: 1px;">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div aria-labelledby="feature-tab" class="tab-pane fade show py-1" id="feature"
-                                role="tabpanel">
-                                <div class="row py-4">
-                                    <!-- Features Section -->
-                                    <div class="col-md-6 col-sm-12 p-3">
-                                        <div class="d-flex flex-column align-items-start h-100"
-                                            style="padding:30px; border-radius:12px; background-color:#faf8ff">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div class="d-flex align-items-center justify-content-center "
-                                                    style="width:36px; height:36px; border-radius:50%; background-color:#7847D9 ; margin-right:10px">
-                                                    <i class="fa fa-star  " style="color:#fff; font-size:14px"></i>
-                                                </div>
-                                                <p
-                                                    style="color:#1A202C; font-weight:600; font-size:1.2rem; margin-bottom:2px">
-                                                    "Create POS Receipt Designs from
-                                                    the Backend.
-                                                </p>
-                                            </div>
-                                            <div class="ms-5">
-                                                <p class="m-0" style="color:#718096">
-                                                    User can add the receipt designs
-                                                    from the backend in the menu
-                                                    Receipt Designs.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12 p-3">
-                                        <div class="d-flex flex-column align-items-start h-100"
-                                            style="padding:30px; border-radius:12px; background-color:#faf8ff">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div class="d-flex align-items-center justify-content-center "
-                                                    style="width:36px; height:36px; border-radius:50%; background-color:#7847D9 ; margin-right:10px">
-                                                    <i class="fa fa-star  " style="color:#fff; font-size:14px"></i>
-                                                </div>
-                                                <p
-                                                    style="color:#1A202C; font-weight:600; font-size:1.2rem; margin-bottom:2px">
-                                                    Choosing of Receipt in
-                                                    Frontend.</p>
-                                            </div>
-                                            <div class="ms-5">
-                                                <p class="m-0" style="color:#718096">
-                                                    Empower users to choose
-                                                    customized receipt designs on
-                                                    the go from the POS interface.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12 p-3">
-                                        <div class="d-flex flex-column align-items-start h-100"
-                                            style="padding:30px; border-radius:12px; background-color:#faf8ff">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div class="d-flex align-items-center justify-content-center "
-                                                    style="width:36px; height:36px; border-radius:50%; background-color:#7847D9 ; margin-right:10px">
-                                                    <i class="fa fa-star  " style="color:#fff; font-size:14px"></i>
-                                                </div>
-                                                <p
-                                                    style="color:#1A202C; font-weight:600; font-size:1.2rem; margin-bottom:2px">
-                                                    Enable Custom Receipt Designs
-                                                    for POS.
-                                                </p>
-                                            </div>
-                                            <div class="ms-5">
-                                                <p class="m-0" style="color:#718096">
-                                                    User can choose whether the
-                                                    current POS needs custom receipt
-                                                    design.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12 p-3">
-                                        <div class="d-flex flex-column align-items-start h-100"
-                                            style="padding:30px; border-radius:12px; background-color:#faf8ff">
-                                            <div class="d-flex align-items-center justify-content-center">
-                                                <div class="d-flex align-items-center justify-content-center "
-                                                    style="width:36px; height:36px; border-radius:50%; background-color:#7847D9 ; margin-right:10px">
-                                                    <i class="fa fa-star  " style="color:#fff; font-size:14px"></i>
-                                                </div>
-                                                <p
-                                                    style="color:#1A202C; font-weight:600; font-size:1.2rem; margin-bottom:2px">
-                                                    Edit POS Receipt Designs from
-                                                    the Backend
-                                                </p>
-                                            </div>
-                                            <div class="ms-5">
-                                                <p class="m-0" style="color:#718096">
-                                                    We can edit the receipt design
-                                                    from the backend of the POS.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div aria-labelledby="faq-tab" class="tab-pane fade show" id="faq" role="tabpanel">
-                                <div class="row" style=" background-color:#fff !important">
-                                    <div class="col-md-12" aria-labelledby="faq-tab" id="faq" role="tabpanel">
-                                        <div class="accordion mb-4" id="accordion6">
-                                            <div style="background-color:#fff">
-                                                <!-- accordian -->
-                                                <div class="accordion" id="accordion_faq">
-                                                    <!-- Question 1 -->
-                                                    <div class="" style="margin:1rem 0rem">
-                                                        <div aria-expanded="false" class=" card-header collapsed"
-                                                            data-bs-toggle="collapse" data-bs-target="#collapseFAQOne"
-                                                            href="#collapseFAQOne" aria-controls="collapseFAQOne"
-                                                            style="cursor: pointer; background-color:#f8f8f8; border:none; border-top-right-radius:10px; border-top-left-radius:10px; padding: 12px 24px;">
-                                                            <a class="card-title text-decoration-none"
-                                                                style=" font-size:18px; line-height:30px; font-weight:500; color:#040f3a">
-                                                                Can I apply
-                                                                different receipt
-                                                                designs to different
-                                                                POS locations?
-                                                                <img alt="" class="float-end"
-                                                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
-                                                                    width="25px">
-                                                            </a>
-                                                        </div>
-                                                        <div class="accordion-collapse collapse"
-                                                            aria-labelledby="collapseFAQOne"
-                                                            data-bs-parent="#accordion_faq" id="collapseFAQOne"
-                                                            style=" box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px; border: 1px solid #f8f8f8; border-bottom-right-radius:10px; border-bottom-left-radius:10px">
-                                                            <p
-                                                                style=" padding:0.75rem 1.25rem; font-size:16px; line-height:27px;  color:#888; font-weight:normal; border-bottom-right-radius:10px; border-bottom-left-radius:10px">
-                                                                Yes, each POS
-                                                                location can have
-                                                                its own custom
-                                                                receipt design. When
-                                                                setting up each POS,
-                                                                you can choose a
-                                                                specific receipt
-                                                                design for that
-                                                                location
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Question 2 -->
-                                                    <div style="margin:1rem 0rem">
-                                                        <div aria-expanded="false"
-                                                            class="cursor-pointer card-header collapsed"
-                                                            data-bs-toggle="collapse" aria-controls="collapseFAQThree"
-                                                            data-bs-target="#collapseFAQThree"
-                                                            style="cursor: pointer; background-color:#f8f8f8; border:1px solid #f8f8f8; border-top-right-radius:10px; border-top-left-radius:10px; padding: 12px 24px">
-                                                            <a class="card-title text-decoration-none"
-                                                                style=" font-size:18px; line-height:30px; font-weight:500; color:#040f3a">
-                                                                Is it possible to
-                                                                edit receipt designs
-                                                                without affecting
-                                                                the POS operations?
-                                                                <img alt="" class="float-end"
-                                                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
-                                                                    width="25px">
-                                                            </a>
-                                                        </div>
-                                                        <div class="accordion-collapse collapse"
-                                                            aria-labelledby="collapseFAQThree"
-                                                            data-bs-parent="#accordion_faq" id="collapseFAQThree"
-                                                            style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px; border: 1px solid #f8f8f8; border-bottom-right-radius:10px; border-bottom-left-radius:10px">
-                                                            <p
-                                                                style="padding:0.75rem 1.25rem; font-size:16px; line-height:27px;  color:#888; font-weight:normal; border-bottom-right-radius:10px; border-bottom-left-radius:10px">
-                                                                Yes, you can edit
-                                                                receipt designs in
-                                                                the backend without
-                                                                interrupting POS
-                                                                operations. Changes
-                                                                are applied only
-                                                                after the design is
-                                                                saved, allowing
-                                                                seamless updates and
-                                                                customizations.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Question 3 -->
-                                                    <div style="margin:1rem 0rem">
-                                                        <div aria-expanded="false"
-                                                            class="cursor-pointer card-header collapsed"
-                                                            data-bs-toggle="collapse" aria-controls="collapseFAQFour"
-                                                            data-bs-target="#collapseFAQFour"
-                                                            style="cursor: pointer; background-color:#f8f8f8; border:1px solid #f8f8f8; border-top-right-radius:10px; border-top-left-radius:10px; padding: 12px 24px">
-                                                            <a class="card-title text-decoration-none"
-                                                                style=" font-size:18px; line-height:30px; font-weight:500; color:#040f3a">
-                                                                Can we preview the
-                                                                receipt design
-                                                                before applying it?
-                                                                <img alt="" class="float-end"
-                                                                    src="//apps.odoocdn.com/apps/assets/16.0/index_test_odoo/assets/icons/down.svg?6ef7fd7"
-                                                                    width="25px">
-                                                            </a>
-                                                        </div>
-                                                        <div class="accordion-collapse collapse"
-                                                            aria-labelledby="collapseFAQFour"
-                                                            data-bs-parent="#accordion_faq" id="collapseFAQFour"
-                                                            style="box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px; border: 1px solid #f8f8f8; border-bottom-right-radius:10px; border-bottom-left-radius:10px">
-                                                            <p
-                                                                style="padding:0.75rem 1.25rem; font-size:16px; line-height:27px;  color:#888; font-weight:normal; border-bottom-right-radius:10px; border-bottom-left-radius:10px">
-                                                                Currently, a
-                                                                real-time preview
-                                                                feature is not
-                                                                available, but you
-                                                                can test the design
-                                                                by selecting it in
-                                                                the backend and
-                                                                printing sample
-                                                                receipts to see how
-                                                                they will look in
-                                                                the POS frontend.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--  -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div aria-labelledby="releases-tab" class="tab-pane fade show" id="releases"
-                                role="tabpanel">
-                                <!-- Release Notes -->
-                                <div class="row pt-5 m-0">
-                                    <div class="col-md-3">
-                                        <h4
-                                            style="font-size:16px; font-weight:600; color:#514F4F; margin:0; line-height:26px;">
-                                            Latest Release 18.0.1.0.0
-                                        </h4>
-                                        <span style="font-size:14px; color:#7A7979; display:block; margin-bottom:20px;">
-                                            30th October, 2024
-                                        </span>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div style="padding:0 0 40px">
-                                            <div style="margin:0 0 10px">
-                                                <div
-                                                    style="display:inline-block; padding:0px 8px; color:#514F4F; background-color:#FFD8D8; border-radius:20px">
-                                                    Add
-                                                </div>
-                                            </div>
-                                            <div class="d-flex m-0" style="color:#7A7979;">
-                                                <ul class="pl-3 mb-0">
-                                                    <li>
-                                                        Initial Commit
-                                                    </li>
-
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div style="padding:0 0 0; border-bottom:1px solid #E3E3E3">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--  -->
-
-
-                    <!-- service-section -->
-
-                    
+            <!-- service-section -->
+          </div>
         </div>
+      </div>
     </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-<script>
-    $('.owl-carousel').owlCarousel({
-        rtl: true,
-        loop: true,
-        margin: 10,
-        nav: true,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 3
-            },
-            1000: {
-                items: 3
-            }
-        }
-    })
-</script>
-
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script>
+    $(".owl-carousel").owlCarousel({
+      rtl: true,
+      loop: true,
+      margin: 10,
+      nav: true,
+      responsive: {
+        0: {
+          items: 1,
+        },
+        600: {
+          items: 3,
+        },
+        1000: {
+          items: 3,
+        },
+      },
+    });
+  </script>
 </html>
