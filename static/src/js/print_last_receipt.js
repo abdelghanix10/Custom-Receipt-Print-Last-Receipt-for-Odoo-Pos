@@ -42,11 +42,55 @@ export class PrintLastReceiptButton extends Component {
     // Get the last paid order
     const lastOrder = paidOrders[paidOrders.length - 1];
 
-    // Print using default Odoo receipt (not custom design)
     try {
       const receiptData = lastOrder.export_for_printing();
       receiptData.last_receipt = true;
-      // Force use of default template by not using custom receipt
+
+      // If not using custom last receipt design, ensure proper data structure for default Odoo receipt
+      if (
+        !this.pos.config.is_print_last_receipt ||
+        !this.pos.config.last_receipt_design_id
+      ) {
+        // Build complete company object matching POS structure
+        const companyData = {
+          id: this.pos.company.id,
+          name: this.pos.company.name || "",
+          street: this.pos.company.street || "",
+          street2: this.pos.company.street2 || "",
+          city: this.pos.company.city || "",
+          zip: this.pos.company.zip || "",
+          state: this.pos.company.state_id ? this.pos.company.state_id[1] : "",
+          country: this.pos.company.country_id
+            ? this.pos.company.country_id[1]
+            : "",
+          vat: this.pos.company.vat || "",
+          phone: this.pos.company.phone || "",
+          email: this.pos.company.email || "",
+          website: this.pos.company.website || "",
+          logo: this.pos.company.logo || null,
+          contact_address: this.pos.company.contact_address || "",
+        };
+
+        receiptData.company = companyData;
+
+        if (!receiptData.cashier) {
+          receiptData.cashier = this.pos.get_cashier()?.name || "";
+        }
+
+        if (!receiptData.date) {
+          receiptData.date = lastOrder.date_order;
+        }
+
+        if (!receiptData.headerData) {
+          receiptData.headerData = {};
+        }
+
+        receiptData.headerData.company = companyData;
+        receiptData.headerData.cashier = receiptData.cashier;
+        receiptData.headerData.header = this.pos.config.receipt_header || "";
+      }
+
+      // Always use OrderReceipt component - the patch will handle which design to use
       const isPrinted = await this.printer.print(
         OrderReceipt,
         {
@@ -59,9 +103,7 @@ export class PrintLastReceiptButton extends Component {
       if (isPrinted) {
         this.notification.add(
           _t("Last receipt printed successfully for order: ") + lastOrder.name,
-          {
-            type: "success",
-          }
+          { type: "success" }
         );
       }
     } catch (error) {

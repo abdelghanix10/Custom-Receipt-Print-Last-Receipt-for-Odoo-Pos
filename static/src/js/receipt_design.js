@@ -24,15 +24,32 @@ patch(OrderReceipt.prototype, {
   get templateComponent() {
     var mainRef = this;
     var receipt_design = mainRef.pos.config.design_receipt;
+    var useCustom = mainRef.pos.config.is_custom_receipt;
+
     if (this.props.data.last_receipt) {
       receipt_design = mainRef.pos.config.last_design_receipt;
+      useCustom = mainRef.pos.config.is_print_last_receipt;
     }
+
+    // Only use custom design if the respective setting is enabled
+    if (!useCustom) {
+      return null; // Return null to use default OrderReceipt template
+    }
+
     return class extends Component {
       setup() {}
       static template = xml`${receipt_design}`;
     };
   },
   get isTrue() {
+    // For last receipt, check is_print_last_receipt
+    if (this.props.data && this.props.data.last_receipt) {
+      if (this.env.services.pos.config.is_print_last_receipt == false) {
+        return true;
+      }
+      return false;
+    }
+    // For regular receipt, check is_custom_receipt
     if (this.env.services.pos.config.is_custom_receipt == false) {
       return true;
     }
