@@ -90,6 +90,8 @@ export class PrintLastReceiptButton extends Component {
         receiptData.headerData.header = this.pos.config.receipt_header || "";
       }
 
+      receiptData.order = lastOrder;
+
       // Always use OrderReceipt component - the patch will handle which design to use
       const isPrinted = await this.printer.print(
         OrderReceipt,

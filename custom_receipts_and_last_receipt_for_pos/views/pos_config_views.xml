@@ -20,13 +20,16 @@
                     </div>
                 </setting>
                 <setting title="Print Last Receipt" string="Print Last Receipt" help="Enable a button to print the last paid order.">
-                    <field name="is_print_last_receipt"/>
-                    <div class="content-group mt16">
+                    <field name="enable_print_last_receipt"/>
+                    <div class="content-group mt16" invisible="not enable_print_last_receipt">
                         <div class="row mt16">
+                            <label string="Use Custom Design" for="is_print_last_receipt" class="col-lg-4 o_light_label"/>
+                            <field name="is_print_last_receipt"/>
+                        </div>
+                        <div class="row mt16" invisible="not is_print_last_receipt">
                             <label class="col-lg-4 o_light_label"
                                    for="last_receipt_design_id"/>
                             <field name="last_receipt_design_id"
-                                   invisible="not is_print_last_receipt"
                                    required="is_print_last_receipt"/>
                         </div>
                     </div>

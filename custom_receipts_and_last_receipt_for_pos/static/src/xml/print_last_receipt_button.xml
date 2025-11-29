@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="custom_receipts_for_pos.PrintLastReceiptButton" owl="1">
-        <button class="btn btn-light btn-lg" t-on-click="onClick" style="margin: 5px; width: 100%;">
+        <button t-if="pos.config.enable_print_last_receipt" class="btn btn-light btn-lg" t-on-click="onClick" style="margin: 5px; width: 100%;">
             <i class="fa fa-print fa-2x"/>
             <br/>
             <span>Print Last Receipt</span>

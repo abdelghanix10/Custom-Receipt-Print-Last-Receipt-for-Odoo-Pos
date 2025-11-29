@@ -17,6 +17,8 @@ class PosConfig(models.Model):
     is_custom_receipt = fields.Boolean(string='Is Custom Receipt',
                                        help='Indicates the receipt  design is '
                                             'custom or not')
+    enable_print_last_receipt = fields.Boolean(string='Enable Print Last Receipt',
+                                           help='Enable printing of last receipt')
     is_print_last_receipt = fields.Boolean(string='Is Print Last Receipt',
                                            help='Enable printing of last receipt')
     last_receipt_design_id = fields.Many2one(

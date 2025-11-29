@@ -15,10 +15,10 @@ patch(OrderReceipt.prototype, {
   get templateProps() {
     return {
       data: this.props.data,
-      order: this.pos.get_order(),
-      receipt: this.pos.get_order().export_for_printing(),
+      order: this.props.data.order || this.props.order || this.pos.get_order(),
+      receipt: this.props.data,
       orderlines: this.props.data.orderlines,
-      paymentlines: this.pos.get_order().export_for_printing().paymentlines,
+      paymentlines: this.props.data.paymentlines,
     };
   },
   get templateComponent() {
