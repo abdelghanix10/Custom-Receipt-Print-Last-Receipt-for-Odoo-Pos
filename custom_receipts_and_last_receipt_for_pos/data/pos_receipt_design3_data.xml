@@ -83,15 +83,15 @@
                         <tr style="border-top:2px solid #000; border-bottom:1px solid #000;">
                             <th style="text-align:left; padding:5px 0;">Product</th>
                             <th style="text-align:center;">Qty</th>
+                            <th style="text-align:right;"></th>
                             <th style="text-align:right;">Price</th>
-                            <th style="text-align:right;">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         <t t-if="props.order and props.order.length and props.order and props.order.pos and props.order.pos.mainScreen and props.order.pos.mainScreen.props and props.order.pos.mainScreen.props.order and props.order.pos.mainScreen.props.order.orderlines and props.order.pos.mainScreen.props.order.orderlines.length">
                             <t t-if="props.order.pos.mainScreen.props">
                                 <tr t-foreach="props.order.pos.mainScreen.props.order.orderlines" t-as="orderline" t-key="index_orderlines" style="border-bottom:1px dashed #ccc;">
-                                    <td style="padding:8px 0; text-align:left;">
+                                    <td style="padding:8px 0; text-align:left; word-wrap: break-word; word-break: break-word;">
                                         <div style="font-weight:500;"><t t-esc="orderline.productName"/></div>
                                         <t t-if="orderline.get_discount() > 0">
                                             <div style="font-size:11px; font-style:italic; color:#666;">
@@ -117,7 +117,7 @@
                         <t t-else="">
                             <t t-if="props.orderlines and props.orderlines.length">
                                 <tr t-foreach="props.orderlines" t-as="orderline" t-key="orderline_index" style="border-bottom:1px dashed #ccc;">
-                                    <td style="padding:8px 0; text-align:left;">
+                                    <td style="padding:8px 0; text-align:left; word-wrap: break-word; word-break: break-word;">
                                         <div style="font-weight:500;"><t t-esc="orderline.productName"/></div>
                                         <t t-if="orderline.discount > 0">
                                             <div style="font-size:11px; font-style:italic; color:#666;">
@@ -173,7 +173,7 @@
                 <t t-foreach='props.paymentlines' t-as='line' t-key="index_paymentlines">
                     <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                         <span><t t-esc='line.name' /></span>
-                        <span t-esc='line.amount'/>
+                        <span t-esc='env.utils.formatCurrency(line.amount)'/>
                     </div>
                 </t>
                 
