@@ -1,6 +1,6 @@
 {
     'name': 'Custom POS Receipt Design & Last Receipt',
-    'version': '18.0.1.0.0',
+    'version': '19.0.1.0.0',
     'category': 'Point of Sale',
     'summary': 'Customize POS receipt designs and print last receipt with one click',
     'description': """

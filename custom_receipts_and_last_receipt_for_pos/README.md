@@ -1,12 +1,12 @@
-# Custom POS Receipt Design & Last Receipt - Odoo 18.0
+# Custom POS Receipt Design & Last Receipt - Odoo 19.0
 
-![Odoo Version](https://img.shields.io/badge/Odoo-18.0-blue)
+![Odoo Version](https://img.shields.io/badge/Odoo-19.0-blue)
 ![License](https://img.shields.io/badge/License-OPL--1-yellow)
-![Version](https://img.shields.io/badge/Version-18.0.1.0.0-green)
+![Version](https://img.shields.io/badge/Version-19.0.1.0.0-green)
 
 ## Overview
 
-Enhance your Point of Sale experience with custom receipt designs and convenient last receipt printing functionality for Odoo 18.0.
+Enhance your Point of Sale experience with custom receipt designs and convenient last receipt printing functionality for Odoo 19.0.
 
 ## Key Features
 
@@ -72,7 +72,7 @@ Works perfectly with existing POS workflow without disrupting operations.
 | Property        | Value                                    |
 | --------------- | ---------------------------------------- |
 | **Module Name** | custom_receipts_and_last_receipt_for_pos |
-| **Version**     | 18.0.1.0.0                               |
+| **Version**     | 19.0.1.0.0                               |
 | **Category**    | Point of Sale                            |
 | **Author**      | Abdelghani X                             |
 | **Website**     | https://www.AbdelghaniX.com              |
@@ -127,6 +127,12 @@ For support, feature requests, or bug reports:
 - **Repository**: [GitHub](https://github.com/abdelghanix10/Custom-Receipt-Print-Last-Receipt-for-Odoo-Pos)
 
 ## Changelog
+
+### Version 19.0.1.0.0 (2025-12-14)
+
+- Updated module for Odoo 19.0 compatibility
+- Maintained OWL framework implementation for POS frontend
+- All existing features fully functional in Odoo 19
 
 ### Version 18.0.1.0.0 (2025-11-09)
 

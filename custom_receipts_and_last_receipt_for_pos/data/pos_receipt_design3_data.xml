@@ -116,7 +116,7 @@
                         </t>
                         <t t-else="">
                             <t t-if="props.orderlines and props.orderlines.length">
-                                <tr t-foreach="props.orderlines" t-as="orderline" t-key="orderline_index" style="border-bottom:1px dashed #ccc;">
+                                <tr t-foreach="props.orderlines" t-as="orderline" t-key="orderline.id or orderline_index" style="border-bottom:1px dashed #ccc;">
                                     <td style="padding:8px 0; text-align:left; word-wrap: break-word; word-break: break-word;">
                                         <div style="font-weight:500;"><t t-esc="orderline.productName"/></div>
                                         <t t-if="orderline.discount > 0">
@@ -153,7 +153,7 @@
                         <span>Subtotal:</span>
                         <span t-esc='env.utils.formatCurrency(props.data.total_without_tax)'/>
                     </div>
-                    <t t-foreach='props.data.tax_details' t-as='tax' t-key="index_tax_details">
+                    <t t-foreach='props.data.tax_details' t-as='tax' t-key="tax.id or tax_index">
                         <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:12px;">
                             <span><t t-esc='tax.tax.name' /></span>
                             <span t-esc='env.utils.formatCurrency(tax.amount)'/>
@@ -170,7 +170,7 @@
 
             <!-- Payment Information -->
             <div style="margin-top:15px; font-size:13px;">
-                <t t-foreach='props.paymentlines' t-as='line' t-key="index_paymentlines">
+                <t t-foreach='props.paymentlines' t-as='line' t-key="line.id or line_index">
                     <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                         <span><t t-esc='line.name' /></span>
                         <span t-esc='env.utils.formatCurrency(line.amount)'/>
@@ -196,20 +196,14 @@
             </t>
 
             <t t-if='taxincluded'>
-                <div style="margin-top:10px; padding-top:8px; border-top:1px dashed #ccc; font-size:12px;">
-                    <t t-if="props.receipt.tax_details">
-                        <t t-foreach='props.receipt.tax_details' t-as='tax' t-key="index_receipt_tax_details">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:3px; color:#666;">
-                                <span><t t-esc='tax.tax.name' /></span>
-                                <span t-esc='tax.amount'/>
-                            </div>
-                        </t>
-                    </t>
-                    <div style="display:flex; justify-content:space-between; font-weight:500;">
-                        <span>Total Taxes:</span>
-                        <span t-esc='props.receipt.total_tax'/>
+                <t t-if="props.receipt.total_tax">
+                    <div style="margin-top:10px; padding-top:8px; border-top:1px dashed #ccc; font-size:12px;">
+                        <div style="display:flex; justify-content:space-between; font-weight:500;">
+                            <span>Total Taxes:</span>
+                            <span t-esc='env.utils.formatCurrency(props.receipt.total_tax)'/>
+                        </div>
                     </div>
-                </div>
+                </t>
             </t>
 
             <div class='before-footer' />
@@ -234,7 +228,7 @@
 
             <!-- Payment Terminal Receipts -->
             <div class='after-footer'>
-                <t t-foreach='props.paymentlines' t-as='line' t-key="index_payment">
+                <t t-foreach='props.paymentlines' t-as='line' t-key="line.id or line_index">
                     <t t-if='line.ticket'>
                         <div class="pos-payment-terminal-receipt" style="margin-top:15px; font-size:11px; border-top:1px dashed #ccc; padding-top:10px;">
                             <t t-raw='line.ticket'/>

@@ -2,7 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { Component } from "@odoo/owl";
-import { usePos } from "@point_of_sale/app/store/pos_hook";
+import { usePos } from "@point_of_sale/app/hooks/pos_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ActionpadWidget } from "@point_of_sale/app/screens/product_screen/action_pad/action_pad";
 import { patch } from "@web/core/utils/patch";
@@ -43,68 +43,224 @@ export class PrintLastReceiptButton extends Component {
     const lastOrder = paidOrders[paidOrders.length - 1];
 
     try {
-      const receiptData = lastOrder.export_for_printing();
-      receiptData.last_receipt = true;
+      // Build receipt data manually for Odoo 19
+      // Debug: Log the order structure to understand what we're working with
+      console.log("Print Last Receipt - Order structure:", lastOrder);
+      console.log("Print Last Receipt - Order keys:", Object.keys(lastOrder));
 
-      // If not using custom last receipt design, ensure proper data structure for default Odoo receipt
-      if (
-        !this.pos.config.is_print_last_receipt ||
-        !this.pos.config.last_receipt_design_id
-      ) {
-        // Build complete company object matching POS structure
-        const companyData = {
-          id: this.pos.company.id,
-          name: this.pos.company.name || "",
-          street: this.pos.company.street || "",
-          street2: this.pos.company.street2 || "",
-          city: this.pos.company.city || "",
-          zip: this.pos.company.zip || "",
-          state: this.pos.company.state_id ? this.pos.company.state_id[1] : "",
-          country: this.pos.company.country_id
-            ? this.pos.company.country_id[1]
-            : "",
-          vat: this.pos.company.vat || "",
-          phone: this.pos.company.phone || "",
-          email: this.pos.company.email || "",
-          website: this.pos.company.website || "",
-          logo: this.pos.company.logo || null,
-          contact_address: this.pos.company.contact_address || "",
-        };
+      // Get order lines - handle various Odoo 19 data structures
+      let orderLines = [];
 
-        receiptData.company = companyData;
-
-        if (!receiptData.cashier) {
-          receiptData.cashier = this.pos.get_cashier()?.name || "";
+      // Try different ways to access order lines
+      if (lastOrder.lines) {
+        // Could be array, Collection, or Set
+        if (Array.isArray(lastOrder.lines)) {
+          orderLines = lastOrder.lines;
+        } else if (typeof lastOrder.lines.getAll === 'function') {
+          orderLines = lastOrder.lines.getAll();
+        } else if (typeof lastOrder.lines.map === 'function') {
+          orderLines = [...lastOrder.lines];
+        } else if (typeof lastOrder.lines[Symbol.iterator] === 'function') {
+          orderLines = [...lastOrder.lines];
         }
-
-        if (!receiptData.date) {
-          receiptData.date = lastOrder.date_order;
+      } else if (lastOrder.line_ids) {
+        if (Array.isArray(lastOrder.line_ids)) {
+          orderLines = lastOrder.line_ids;
+        } else if (typeof lastOrder.line_ids.getAll === 'function') {
+          orderLines = lastOrder.line_ids.getAll();
+        } else if (typeof lastOrder.line_ids[Symbol.iterator] === 'function') {
+          orderLines = [...lastOrder.line_ids];
         }
-
-        if (!receiptData.headerData) {
-          receiptData.headerData = {};
-        }
-
-        receiptData.headerData.company = companyData;
-        receiptData.headerData.cashier = receiptData.cashier;
-        receiptData.headerData.header = this.pos.config.receipt_header || "";
       }
 
-      receiptData.order = lastOrder;
+      console.log("Print Last Receipt - Order lines found:", orderLines);
+
+      // Get payment lines
+      let paymentLines = [];
+      if (lastOrder.payment_ids) {
+        if (Array.isArray(lastOrder.payment_ids)) {
+          paymentLines = lastOrder.payment_ids;
+        } else if (typeof lastOrder.payment_ids.getAll === 'function') {
+          paymentLines = lastOrder.payment_ids.getAll();
+        } else if (typeof lastOrder.payment_ids[Symbol.iterator] === 'function') {
+          paymentLines = [...lastOrder.payment_ids];
+        }
+      } else if (lastOrder.payments) {
+        if (Array.isArray(lastOrder.payments)) {
+          paymentLines = lastOrder.payments;
+        } else if (typeof lastOrder.payments.getAll === 'function') {
+          paymentLines = lastOrder.payments.getAll();
+        } else if (typeof lastOrder.payments[Symbol.iterator] === 'function') {
+          paymentLines = [...lastOrder.payments];
+        }
+      }
+
+      console.log("Print Last Receipt - Payment lines found:", paymentLines);
+
+      // Build orderlines data for the receipt with unique keys
+      const orderlinesData = orderLines.map((line, index) => {
+        // Handle Model objects, plain objects, and IDs
+        let lineData = line;
+        if (typeof line === 'number' || typeof line === 'string') {
+          lineData = this.pos.models["pos.order.line"]?.get(line) || {};
+        }
+
+        // Access product name through various possible paths
+        let productName = "Product";
+        if (lineData.full_product_name) {
+          productName = lineData.full_product_name;
+        } else if (lineData.product_id) {
+          if (typeof lineData.product_id === 'object') {
+            productName = lineData.product_id.display_name || lineData.product_id.name || "Product";
+          } else if (typeof lineData.product_id === 'number') {
+            const product = this.pos.models["product.product"]?.get(lineData.product_id);
+            productName = product?.display_name || product?.name || "Product";
+          }
+        }
+
+        return {
+          id: lineData.id || `line_${index}`,
+          productName: productName,
+          qty: lineData.qty || lineData.quantity || 0,
+          price: this.env.utils.formatCurrency(lineData.price_subtotal_incl || lineData.price_unit || 0),
+          discount: lineData.discount || 0,
+          customerNote: lineData.customer_note || lineData.note || "",
+          price_subtotal_incl: lineData.price_subtotal_incl || 0,
+          price_subtotal: lineData.price_subtotal || 0,
+          price_unit: lineData.price_unit || 0,
+        };
+      });
+
+      // Build payment lines data with unique keys - filter out negative amounts (change)
+      const paymentlinesData = paymentLines
+        .filter((payment) => {
+          let paymentData = payment;
+          if (typeof payment === 'number' || typeof payment === 'string') {
+            paymentData = this.pos.models["pos.payment"]?.get(payment) || {};
+          }
+          const amount = paymentData.amount || 0;
+          return amount > 0; // Filter out negative amounts (change)
+        })
+        .map((payment, index) => {
+          let paymentData = payment;
+          if (typeof payment === 'number' || typeof payment === 'string') {
+            paymentData = this.pos.models["pos.payment"]?.get(payment) || {};
+          }
+
+          // Access payment method name through various possible paths
+          let paymentName = "Payment";
+          if (paymentData.payment_method_id) {
+            if (typeof paymentData.payment_method_id === 'object') {
+              paymentName = paymentData.payment_method_id.name || "Payment";
+            } else if (typeof paymentData.payment_method_id === 'number') {
+              const method = this.pos.models["pos.payment.method"]?.get(paymentData.payment_method_id);
+              paymentName = method?.name || "Payment";
+            }
+          } else if (paymentData.name) {
+            paymentName = paymentData.name;
+          }
+
+          return {
+            id: paymentData.id || `payment_${index}`,
+            name: paymentName,
+            amount: paymentData.amount || 0,
+          };
+        });
+
+      // Extract tax details from the order
+      let tax_details = [];
+      const taxLines = lastOrder.tax_ids || [];
+
+      if (Array.isArray(taxLines) && taxLines.length > 0) {
+        tax_details = taxLines;
+      } else if (typeof taxLines === 'object' && taxLines !== null && Object.keys(taxLines).length > 0) {
+        tax_details = Object.entries(taxLines).map(([key, value], idx) => ({
+          id: `tax_${idx}`,
+          tax: { name: key },
+          amount: Math.round(value * 100) / 100,
+        }));
+      }
+
+      // We only want to show total_tax, not individual tax lines
+      const amount_tax = Math.round((lastOrder.amount_tax || 0) * 100) / 100;
+
+      // Build company data
+      const companyData = {
+        id: this.pos.company.id,
+        name: this.pos.company.name || "",
+        street: this.pos.company.street || "",
+        street2: this.pos.company.street2 || "",
+        city: this.pos.company.city || "",
+        zip: this.pos.company.zip || "",
+        state: this.pos.company.state_id ? this.pos.company.state_id[1] : "",
+        country: this.pos.company.country_id
+          ? this.pos.company.country_id[1]
+          : "",
+        vat: this.pos.company.vat || "",
+        phone: this.pos.company.phone || "",
+        email: this.pos.company.email || "",
+        website: this.pos.company.website || "",
+        logo: this.pos.company.logo || null,
+        contact_address: this.pos.company.contact_address || "",
+      };
+
+      // Format the date properly
+      let formattedDate = "";
+      const rawDate = lastOrder.date_order;
+      if (rawDate) {
+        try {
+          const dateObj = new Date(rawDate);
+          formattedDate = dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
+        } catch (e) {
+          formattedDate = rawDate;
+        }
+      } else {
+        formattedDate = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
+      }
+
+      // Build receipt data
+      const receiptData = {
+        name: lastOrder.name || lastOrder.pos_reference || "",
+        date: formattedDate,
+        orderlines: orderlinesData,
+        paymentlines: paymentlinesData,
+        amount_total: Math.round((lastOrder.amount_total || 0) * 100) / 100,
+        total_with_tax: Math.round((lastOrder.amount_total || 0) * 100) / 100,
+        total_without_tax: Math.round(((lastOrder.amount_total || 0) - (lastOrder.amount_tax || 0)) * 100) / 100,
+        amount_tax: amount_tax,
+        change: Math.round((lastOrder.amount_return || 0) * 100) / 100,
+        tax_details: [], // Empty - we only show total_tax
+        total_tax: amount_tax,
+        company: companyData,
+        cashier: this.pos.cashier?.name || this.pos.user?.name || "",
+        headerData: {
+          company: companyData,
+          cashier: this.pos.cashier?.name || this.pos.user?.name || "",
+          header: this.pos.config.receipt_header || "",
+        },
+        last_receipt: true,
+        order: lastOrder,
+      };
 
       // Always use OrderReceipt component - the patch will handle which design to use
+      // In Odoo 19, OrderReceipt expects only 'order' prop
+      // We attach the receipt data to the order object for our custom design
+      const orderWithReceiptData = {
+        ...lastOrder,
+        receiptData: receiptData,
+      };
+
       const isPrinted = await this.printer.print(
         OrderReceipt,
         {
-          data: receiptData,
-          formatCurrency: this.env.utils.formatCurrency,
+          order: orderWithReceiptData,
         },
         { webPrintFallback: true }
       );
 
       if (isPrinted) {
         this.notification.add(
-          _t("Last receipt printed successfully for order: ") + lastOrder.name,
+          _t("Last receipt printed successfully for order: ") + (lastOrder.name || lastOrder.pos_reference),
           { type: "success" }
         );
       }
