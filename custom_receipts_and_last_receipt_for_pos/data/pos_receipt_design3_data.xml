@@ -26,6 +26,9 @@
                     <t t-if="env.services.pos.company.email">
                         <div>Email: <t t-esc="env.services.pos.company.email" /></div>
                     </t>
+                    <t t-if="env.services.pos.company.website">
+                        <div>Website: <t t-esc="env.services.pos.company.website" /></div>
+                    </t>
                     <t t-if="env.services.pos.company.vat">
                         <div><t t-esc="env.services.pos.company.vat_label"/>: <t t-esc="env.services.pos.company.vat" /></div>
                     </t>
