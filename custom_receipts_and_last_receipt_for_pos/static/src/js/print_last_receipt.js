@@ -230,6 +230,7 @@ export class PrintLastReceiptButton extends Component {
         amount_tax: amount_tax,
         change: Math.round((lastOrder.amount_return || 0) * 100) / 100,
         tax_details: [], // Empty - we only show total_tax
+        taxDetails: [], // Alias for potential default template usage
         total_tax: amount_tax,
         company: companyData,
         cashier: this.pos.cashier?.name || this.pos.user?.name || "",
@@ -244,11 +245,36 @@ export class PrintLastReceiptButton extends Component {
 
       // Always use OrderReceipt component - the patch will handle which design to use
       // In Odoo 19, OrderReceipt expects only 'order' prop
-      // We attach the receipt data to the order object for our custom design
-      const orderWithReceiptData = {
-        ...lastOrder,
+      // We use Object.create(lastOrder) to preserve the original order's prototype (methods, etc)
+      // and attach/override our receipt data and mock methods
+      const orderWithReceiptData = Object.create(lastOrder);
+
+      // Assign our custom properties and mocks to the wrapper
+      Object.assign(orderWithReceiptData, {
         receiptData: receiptData,
-      };
+        // We might want to override name/date if they differ from model
+        // but usually keeping model's is safer if they exist. 
+        // We add them just in case.
+        name: lastOrder.name || receiptData.name,
+        date_order: lastOrder.date_order || receiptData.date,
+
+        // Mock/Override methods expected by OrderReceipt
+        getReceiptHeaderData: () => receiptData.headerData,
+
+        // Ensure these return our formatted data
+        get_orderlines: () => receiptData.orderlines,
+        get_paymentlines: () => receiptData.paymentlines,
+        get_total_with_tax: () => receiptData.amount_total,
+        get_total_without_tax: () => receiptData.total_without_tax,
+        get_total_tax: () => receiptData.amount_tax,
+        get_tax_details: () => receiptData.tax_details,
+        get_change: () => receiptData.change,
+        // get_currency: () => this.pos.currency, // Use original if available
+
+        // Properties that might be accessed directly
+        tax_details: receiptData.tax_details,
+        taxDetails: receiptData.tax_details,
+      });
 
       const isPrinted = await this.printer.print(
         OrderReceipt,
