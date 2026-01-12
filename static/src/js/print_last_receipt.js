@@ -45,8 +45,6 @@ export class PrintLastReceiptButton extends Component {
     try {
       // Build receipt data manually for Odoo 19
       // Debug: Log the order structure to understand what we're working with
-      console.log("Print Last Receipt - Order structure:", lastOrder);
-      console.log("Print Last Receipt - Order keys:", Object.keys(lastOrder));
 
       // Get order lines - handle various Odoo 19 data structures
       let orderLines = [];
@@ -73,8 +71,6 @@ export class PrintLastReceiptButton extends Component {
         }
       }
 
-      console.log("Print Last Receipt - Order lines found:", orderLines);
-
       // Get payment lines
       let paymentLines = [];
       if (lastOrder.payment_ids) {
@@ -94,8 +90,6 @@ export class PrintLastReceiptButton extends Component {
           paymentLines = [...lastOrder.payments];
         }
       }
-
-      console.log("Print Last Receipt - Payment lines found:", paymentLines);
 
       // Build orderlines data for the receipt with unique keys
       const orderlinesData = orderLines.map((line, index) => {
@@ -291,7 +285,6 @@ export class PrintLastReceiptButton extends Component {
         );
       }
     } catch (error) {
-      console.error("Error printing receipt:", error);
       this.notification.add(_t("Error printing receipt: ") + error.message, {
         type: "danger",
       });

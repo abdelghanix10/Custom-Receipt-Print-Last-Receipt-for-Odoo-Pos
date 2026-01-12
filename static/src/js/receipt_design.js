@@ -15,15 +15,12 @@ patch(OrderReceipt.prototype, {
 
   get templateProps() {
     // Debug logging
-    console.log("Receipt Design - props:", this.props);
-    console.log("Receipt Design - props.order:", this.props.order);
 
     // Check if we have pre-built receipt data (from last receipt printing)
     const prebuiltData = this.props.data || this.props.order?.receiptData;
 
     if (prebuiltData && (prebuiltData.orderlines || prebuiltData.last_receipt)) {
       // Use pre-built receipt data (from print last receipt feature)
-      console.log("Receipt Design - Using prebuilt data");
       const headerData = prebuiltData.headerData || {};
       const safeData = {
         ...prebuiltData,
@@ -54,11 +51,9 @@ patch(OrderReceipt.prototype, {
     }
 
     // For regular receipts, extract data from the live order object
-    console.log("Receipt Design - Extracting from live order");
     const order = this.props.order;
 
     if (!order) {
-      console.log("Receipt Design - No order found");
       return {
         data: {},
         order: null,
@@ -71,7 +66,6 @@ patch(OrderReceipt.prototype, {
     // Extract order lines from the order object
     let orderlines = [];
     const lines = order.lines || order.orderlines || order.get_orderlines?.() || [];
-    console.log("Receipt Design - Raw lines:", lines);
 
     // Convert to array if needed
     let linesArray = [];
@@ -115,8 +109,6 @@ patch(OrderReceipt.prototype, {
       };
     });
 
-    console.log("Receipt Design - Processed orderlines:", orderlines);
-
     // Extract payment lines - filter out negative amounts (these are change, not actual payments)
     let paymentlines = [];
     const payments = order.payment_ids || order.paymentlines || order.get_paymentlines?.() || [];
@@ -155,8 +147,6 @@ patch(OrderReceipt.prototype, {
         };
       });
 
-    console.log("Receipt Design - Processed paymentlines:", paymentlines);
-
     // Extract tax details from the order
     let tax_details = [];
     const taxLines = order.tax_ids || order.get_tax_details?.() || [];
@@ -175,8 +165,6 @@ patch(OrderReceipt.prototype, {
     // We only want to show total_tax, not individual tax lines
     // So we don't populate tax_details for the templates
     // Just calculate total_tax with proper rounding
-
-    console.log("Receipt Design - Tax details:", tax_details);
 
     // Build the complete receipt data
     const amount_total = order.amount_total || order.get_total_with_tax?.() || 0;
