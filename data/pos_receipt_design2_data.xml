@@ -157,7 +157,7 @@
             <div class='before-footer' />
             <!-- Footer -->
             <div t-if='props.receipt.footer_html' style="text-align:center; font-size:14px;">
-                <t t-raw='props.receipt.footer_html'/>
+                <t t-out='props.receipt.footer_html'/>
             </div>
             <div t-if='!props.receipt.footer_html and props.receipt.footer' style="text-align:center; font-size:14px;">
                 <br/>
@@ -169,7 +169,7 @@
                     <t t-if='line.ticket'>
                         <br />
                         <div class="pos-payment-terminal-receipt">
-                            <t t-raw='line.ticket'/>
+                            <t t-out='line.ticket'/>
                         </div>
                     </t>
                 </t>
