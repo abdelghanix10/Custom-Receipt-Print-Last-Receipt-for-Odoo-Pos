@@ -214,7 +214,7 @@
             <!-- Footer Section -->
             <div style="margin-top:20px; padding-top:15px; border-top:2px solid #000; text-align:center;">
                 <div t-if='props.receipt.footer_html' style="font-size:12px; line-height:1.5;">
-                    <t t-raw='props.receipt.footer_html'/>
+                    <t t-out='props.receipt.footer_html'/>
                 </div>
                 <div t-if='!props.receipt.footer_html and props.receipt.footer' style="font-size:12px; line-height:1.5;">
                     <t t-esc='props.receipt.footer'/>
@@ -234,7 +234,7 @@
                 <t t-foreach='props.paymentlines' t-as='line' t-key="line.id or line_index">
                     <t t-if='line.ticket'>
                         <div class="pos-payment-terminal-receipt" style="margin-top:15px; font-size:11px; border-top:1px dashed #ccc; padding-top:10px;">
-                            <t t-raw='line.ticket'/>
+                            <t t-out='line.ticket'/>
                         </div>
                     </t>
                 </t>
