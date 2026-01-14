@@ -21,6 +21,10 @@
                 <setting title="Print Last Receipt" string="Print Last Receipt" help="Enable a button to print the last paid order.">
                     <field name="enable_print_last_receipt"/>
                     <div class="content-group mt16" invisible="not enable_print_last_receipt">
+                        <div class="row mt16">
+                            <label string="Print Method" for="last_receipt_print_method" class="col-lg-4 o_light_label"/>
+                            <field name="last_receipt_print_method" style="width: 66.666666%;"/>
+                        </div>
                         <div class="row mt16 flex">
                             <label string="Use Custom Design" for="is_print_last_receipt" class="col-lg-4 o_light_label"/>
                             <field name="is_print_last_receipt" style="width: 66.666666%;"/>

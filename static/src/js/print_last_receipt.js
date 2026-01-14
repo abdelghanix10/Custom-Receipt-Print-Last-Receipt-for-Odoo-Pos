@@ -270,19 +270,74 @@ export class PrintLastReceiptButton extends Component {
         taxDetails: receiptData.tax_details,
       });
 
-      const isPrinted = await this.printer.print(
-        OrderReceipt,
-        {
-          order: orderWithReceiptData,
-        },
-        { webPrintFallback: true }
-      );
+      // Check the print method setting
+      const printMethod = this.pos.config.last_receipt_print_method || 'chrome';
 
-      if (isPrinted) {
-        this.notification.add(
-          _t("Last receipt printed successfully for order: ") + (lastOrder.name || lastOrder.pos_reference),
-          { type: "success" }
+      if (printMethod === 'qz_tray') {
+        // Use QZ Tray for direct printing
+        const qzService = this.env.services.qz_tray;
+
+        if (!qzService) {
+          this.notification.add(_t("QZ Tray service not available. Please ensure the odoo_qz_print module is installed."), {
+            type: "danger",
+          });
+          return;
+        }
+
+        try {
+          // Connect to QZ Tray
+          await qzService.connect();
+
+          const qzLib = qzService.getQZ();
+          if (qzLib) {
+            // Get the renderer service from env
+            const renderer = this.env.services.renderer;
+
+            // Render receipt to HTML using Odoo's renderer
+            const receiptHtml = await renderer.toHtml(
+              OrderReceipt,
+              {
+                order: orderWithReceiptData,
+              },
+              { addClass: "pos-receipt-print" }
+            );
+
+            // Get HTML content
+            const htmlContent = receiptHtml.outerHTML;
+
+            // Get default printer and print
+            const printerName = await qzLib.printers.getDefault();
+            await qzService.print(printerName, htmlContent, "pixel");
+
+            this.notification.add(
+              _t("Last receipt printed successfully via QZ Tray for order: ") + (lastOrder.name || lastOrder.pos_reference),
+              { type: "success" }
+            );
+          } else {
+            throw new Error("QZ Tray library not loaded");
+          }
+        } catch (qzError) {
+          console.error("QZ Tray print error:", qzError);
+          this.notification.add(_t("QZ Tray print failed: ") + qzError.message, {
+            type: "danger",
+          });
+        }
+      } else {
+        // Use Chrome Preview (default browser print)
+        const isPrinted = await this.printer.print(
+          OrderReceipt,
+          {
+            order: orderWithReceiptData,
+          },
+          { webPrintFallback: true }
         );
+
+        if (isPrinted) {
+          this.notification.add(
+            _t("Last receipt printed successfully for order: ") + (lastOrder.name || lastOrder.pos_reference),
+            { type: "success" }
+          );
+        }
       }
     } catch (error) {
       this.notification.add(_t("Error printing receipt: ") + error.message, {
