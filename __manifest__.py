@@ -33,10 +33,6 @@
         3. Start using custom receipts and last receipt printing
     """,
     'author': 'Abdelghani X',
-    'website': 'https://www.AbdelghaniX.com',
-    'license': 'OPL-1',
-    'price': 29.99,
-    'currency': 'USD',
     'images': ['static/description/banner.png'],
     'depends': ['point_of_sale'],
     'data': [

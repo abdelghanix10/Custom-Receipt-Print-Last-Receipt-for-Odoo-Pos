@@ -72,12 +72,8 @@ Works perfectly with existing POS workflow without disrupting operations.
 | Property        | Value                                    |
 | --------------- | ---------------------------------------- |
 | **Module Name** | custom_receipts_and_last_receipt_for_pos |
-| **Version**     | 19.0.1.0.0                               |
 | **Category**    | Point of Sale                            |
 | **Author**      | Abdelghani X                             |
-| **Website**     | https://www.AbdelghaniX.com              |
-| **License**     | OPL-1                                    |
-| **Price**       | $29.99 USD                               |
 | **Depends**     | point_of_sale                            |
 
 ## Technical Details
@@ -122,8 +118,6 @@ custom_receipts_and_last_receipt_for_pos/
 
 For support, feature requests, or bug reports:
 
-- **Website**: [www.AbdelghaniX.com](https://www.AbdelghaniX.com)
-- **Email**: contact@abdelghanix.com
 - **Repository**: [GitHub](https://github.com/abdelghanix10/Custom-Receipt-Print-Last-Receipt-for-Odoo-Pos)
 
 ## Changelog
