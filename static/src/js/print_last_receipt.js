@@ -29,7 +29,7 @@ export class PrintLastReceiptButton extends Component {
       (order) =>
         order.state === "paid" ||
         order.state === "done" ||
-        order.state === "invoiced"
+        order.state === "invoiced",
     );
 
     if (paidOrders.length === 0) {
@@ -54,19 +54,19 @@ export class PrintLastReceiptButton extends Component {
         // Could be array, Collection, or Set
         if (Array.isArray(lastOrder.lines)) {
           orderLines = lastOrder.lines;
-        } else if (typeof lastOrder.lines.getAll === 'function') {
+        } else if (typeof lastOrder.lines.getAll === "function") {
           orderLines = lastOrder.lines.getAll();
-        } else if (typeof lastOrder.lines.map === 'function') {
+        } else if (typeof lastOrder.lines.map === "function") {
           orderLines = [...lastOrder.lines];
-        } else if (typeof lastOrder.lines[Symbol.iterator] === 'function') {
+        } else if (typeof lastOrder.lines[Symbol.iterator] === "function") {
           orderLines = [...lastOrder.lines];
         }
       } else if (lastOrder.line_ids) {
         if (Array.isArray(lastOrder.line_ids)) {
           orderLines = lastOrder.line_ids;
-        } else if (typeof lastOrder.line_ids.getAll === 'function') {
+        } else if (typeof lastOrder.line_ids.getAll === "function") {
           orderLines = lastOrder.line_ids.getAll();
-        } else if (typeof lastOrder.line_ids[Symbol.iterator] === 'function') {
+        } else if (typeof lastOrder.line_ids[Symbol.iterator] === "function") {
           orderLines = [...lastOrder.line_ids];
         }
       }
@@ -76,17 +76,19 @@ export class PrintLastReceiptButton extends Component {
       if (lastOrder.payment_ids) {
         if (Array.isArray(lastOrder.payment_ids)) {
           paymentLines = lastOrder.payment_ids;
-        } else if (typeof lastOrder.payment_ids.getAll === 'function') {
+        } else if (typeof lastOrder.payment_ids.getAll === "function") {
           paymentLines = lastOrder.payment_ids.getAll();
-        } else if (typeof lastOrder.payment_ids[Symbol.iterator] === 'function') {
+        } else if (
+          typeof lastOrder.payment_ids[Symbol.iterator] === "function"
+        ) {
           paymentLines = [...lastOrder.payment_ids];
         }
       } else if (lastOrder.payments) {
         if (Array.isArray(lastOrder.payments)) {
           paymentLines = lastOrder.payments;
-        } else if (typeof lastOrder.payments.getAll === 'function') {
+        } else if (typeof lastOrder.payments.getAll === "function") {
           paymentLines = lastOrder.payments.getAll();
-        } else if (typeof lastOrder.payments[Symbol.iterator] === 'function') {
+        } else if (typeof lastOrder.payments[Symbol.iterator] === "function") {
           paymentLines = [...lastOrder.payments];
         }
       }
@@ -95,7 +97,7 @@ export class PrintLastReceiptButton extends Component {
       const orderlinesData = orderLines.map((line, index) => {
         // Handle Model objects, plain objects, and IDs
         let lineData = line;
-        if (typeof line === 'number' || typeof line === 'string') {
+        if (typeof line === "number" || typeof line === "string") {
           lineData = this.pos.models["pos.order.line"]?.get(line) || {};
         }
 
@@ -104,10 +106,15 @@ export class PrintLastReceiptButton extends Component {
         if (lineData.full_product_name) {
           productName = lineData.full_product_name;
         } else if (lineData.product_id) {
-          if (typeof lineData.product_id === 'object') {
-            productName = lineData.product_id.display_name || lineData.product_id.name || "Product";
-          } else if (typeof lineData.product_id === 'number') {
-            const product = this.pos.models["product.product"]?.get(lineData.product_id);
+          if (typeof lineData.product_id === "object") {
+            productName =
+              lineData.product_id.display_name ||
+              lineData.product_id.name ||
+              "Product";
+          } else if (typeof lineData.product_id === "number") {
+            const product = this.pos.models["product.product"]?.get(
+              lineData.product_id,
+            );
             productName = product?.display_name || product?.name || "Product";
           }
         }
@@ -116,7 +123,9 @@ export class PrintLastReceiptButton extends Component {
           id: lineData.id || `line_${index}`,
           productName: productName,
           qty: lineData.qty || lineData.quantity || 0,
-          price: this.env.utils.formatCurrency(lineData.price_subtotal_incl || lineData.price_unit || 0),
+          price: this.env.utils.formatCurrency(
+            lineData.price_subtotal_incl || lineData.price_unit || 0,
+          ),
           discount: lineData.discount || 0,
           customerNote: lineData.customer_note || lineData.note || "",
           price_subtotal_incl: lineData.price_subtotal_incl || 0,
@@ -129,7 +138,7 @@ export class PrintLastReceiptButton extends Component {
       const paymentlinesData = paymentLines
         .filter((payment) => {
           let paymentData = payment;
-          if (typeof payment === 'number' || typeof payment === 'string') {
+          if (typeof payment === "number" || typeof payment === "string") {
             paymentData = this.pos.models["pos.payment"]?.get(payment) || {};
           }
           const amount = paymentData.amount || 0;
@@ -137,17 +146,19 @@ export class PrintLastReceiptButton extends Component {
         })
         .map((payment, index) => {
           let paymentData = payment;
-          if (typeof payment === 'number' || typeof payment === 'string') {
+          if (typeof payment === "number" || typeof payment === "string") {
             paymentData = this.pos.models["pos.payment"]?.get(payment) || {};
           }
 
           // Access payment method name through various possible paths
           let paymentName = "Payment";
           if (paymentData.payment_method_id) {
-            if (typeof paymentData.payment_method_id === 'object') {
+            if (typeof paymentData.payment_method_id === "object") {
               paymentName = paymentData.payment_method_id.name || "Payment";
-            } else if (typeof paymentData.payment_method_id === 'number') {
-              const method = this.pos.models["pos.payment.method"]?.get(paymentData.payment_method_id);
+            } else if (typeof paymentData.payment_method_id === "number") {
+              const method = this.pos.models["pos.payment.method"]?.get(
+                paymentData.payment_method_id,
+              );
               paymentName = method?.name || "Payment";
             }
           } else if (paymentData.name) {
@@ -167,7 +178,11 @@ export class PrintLastReceiptButton extends Component {
 
       if (Array.isArray(taxLines) && taxLines.length > 0) {
         tax_details = taxLines;
-      } else if (typeof taxLines === 'object' && taxLines !== null && Object.keys(taxLines).length > 0) {
+      } else if (
+        typeof taxLines === "object" &&
+        taxLines !== null &&
+        Object.keys(taxLines).length > 0
+      ) {
         tax_details = Object.entries(taxLines).map(([key, value], idx) => ({
           id: `tax_${idx}`,
           tax: { name: key },
@@ -204,12 +219,16 @@ export class PrintLastReceiptButton extends Component {
       if (rawDate) {
         try {
           const dateObj = new Date(rawDate);
-          formattedDate = dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
+          formattedDate =
+            dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
         } catch (e) {
           formattedDate = rawDate;
         }
       } else {
-        formattedDate = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString();
+        formattedDate =
+          new Date().toLocaleDateString() +
+          " " +
+          new Date().toLocaleTimeString();
       }
 
       // Build receipt data
@@ -220,7 +239,10 @@ export class PrintLastReceiptButton extends Component {
         paymentlines: paymentlinesData,
         amount_total: Math.round((lastOrder.amount_total || 0) * 100) / 100,
         total_with_tax: Math.round((lastOrder.amount_total || 0) * 100) / 100,
-        total_without_tax: Math.round(((lastOrder.amount_total || 0) - (lastOrder.amount_tax || 0)) * 100) / 100,
+        total_without_tax:
+          Math.round(
+            ((lastOrder.amount_total || 0) - (lastOrder.amount_tax || 0)) * 100,
+          ) / 100,
         amount_tax: amount_tax,
         change: Math.round((lastOrder.amount_return || 0) * 100) / 100,
         tax_details: [], // Empty - we only show total_tax
@@ -247,7 +269,7 @@ export class PrintLastReceiptButton extends Component {
       Object.assign(orderWithReceiptData, {
         receiptData: receiptData,
         // We might want to override name/date if they differ from model
-        // but usually keeping model's is safer if they exist. 
+        // but usually keeping model's is safer if they exist.
         // We add them just in case.
         name: lastOrder.name || receiptData.name,
         date_order: lastOrder.date_order || receiptData.date,
@@ -271,16 +293,21 @@ export class PrintLastReceiptButton extends Component {
       });
 
       // Check the print method setting
-      const printMethod = this.pos.config.last_receipt_print_method || 'chrome';
+      const printMethod = this.pos.config.last_receipt_print_method || "chrome";
 
-      if (printMethod === 'qz_tray') {
+      if (printMethod === "qz_tray") {
         // Use QZ Tray for direct printing
         const qzService = this.env.services.qz_tray;
 
         if (!qzService) {
-          this.notification.add(_t("QZ Tray service not available. Please ensure the odoo_qz_print module is installed."), {
-            type: "danger",
-          });
+          this.notification.add(
+            _t(
+              "QZ Tray service not available. Please ensure the odoo_qz_print module is installed.",
+            ),
+            {
+              type: "danger",
+            },
+          );
           return;
         }
 
@@ -298,8 +325,9 @@ export class PrintLastReceiptButton extends Component {
               OrderReceipt,
               {
                 order: orderWithReceiptData,
+                data: receiptData,
               },
-              { addClass: "pos-receipt-print" }
+              { addClass: "pos-receipt-print" },
             );
 
             // Get HTML content
@@ -347,17 +375,21 @@ export class PrintLastReceiptButton extends Component {
             await qzService.print(printerName, htmlContent, "pixel");
 
             this.notification.add(
-              _t("Last receipt printed successfully via QZ Tray for order: ") + (lastOrder.name || lastOrder.pos_reference),
-              { type: "success" }
+              _t("Last receipt printed successfully via QZ Tray for order: ") +
+                (lastOrder.name || lastOrder.pos_reference),
+              { type: "success" },
             );
           } else {
             throw new Error("QZ Tray library not loaded");
           }
         } catch (qzError) {
           console.error("QZ Tray print error:", qzError);
-          this.notification.add(_t("QZ Tray print failed: ") + qzError.message, {
-            type: "danger",
-          });
+          this.notification.add(
+            _t("QZ Tray print failed: ") + qzError.message,
+            {
+              type: "danger",
+            },
+          );
         }
       } else {
         // Use Chrome Preview (default browser print)
@@ -366,13 +398,14 @@ export class PrintLastReceiptButton extends Component {
           {
             order: orderWithReceiptData,
           },
-          { webPrintFallback: true }
+          { webPrintFallback: true },
         );
 
         if (isPrinted) {
           this.notification.add(
-            _t("Last receipt printed successfully for order: ") + (lastOrder.name || lastOrder.pos_reference),
-            { type: "success" }
+            _t("Last receipt printed successfully for order: ") +
+              (lastOrder.name || lastOrder.pos_reference),
+            { type: "success" },
           );
         }
       }
