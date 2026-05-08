@@ -27,6 +27,11 @@ class PosConfig(models.Model):
     last_design_receipt = fields.Text(
         related='last_receipt_design_id.design_receipt',
         string='Last Receipt XML')
+    receipt_print_method = fields.Selection([
+        ('chrome', 'Chrome Preview'),
+        ('qz_tray', 'QZ Tray')
+    ], string='Print Receipt Method', default='chrome',
+        help='Select how to print the main order receipt: Chrome Preview uses browser print dialog, QZ Tray prints directly to printer')
     last_receipt_print_method = fields.Selection([
         ('chrome', 'Chrome Preview'),
         ('qz_tray', 'QZ Tray')
