@@ -8,6 +8,9 @@ import { ActionpadWidget } from "@point_of_sale/app/screens/product_screen/actio
 import { patch } from "@web/core/utils/patch";
 import { OrderReceipt } from "@point_of_sale/app/screens/receipt_screen/receipt/order_receipt";
 
+// Cache printer name at module level so getDefault() is only called once per session
+let _cachedLastReceiptPrinterName = null;
+
 export class PrintLastReceiptButton extends Component {
   static template = "custom_receipts_for_pos.PrintLastReceiptButton";
   static props = {
@@ -294,7 +297,6 @@ export class PrintLastReceiptButton extends Component {
 
       // Check the print method setting
       const printMethod = this.pos.config.last_receipt_print_method || "chrome";
-      let cachedPrinterName = null;
 
       if (printMethod === "qz_tray") {
         // Use QZ Tray for direct printing
@@ -351,16 +353,14 @@ export class PrintLastReceiptButton extends Component {
               <body>${receiptHtml.outerHTML}</body>
               </html>`;
 
-            // Get default printer and print
-            if (!cachedPrinterName) {
-              // يمكنك هنا وضع اسم الطابعة يدوياً إذا أردت سرعة قصوى
-              // cachedPrinterName = "اسم الطابعة في الويندوز";
-              cachedPrinterName = await qzLib.printers.getDefault();
-              console.log("Printer cached:", cachedPrinterName);
+            // Get default printer once and cache it for all future prints
+            if (!_cachedLastReceiptPrinterName) {
+              _cachedLastReceiptPrinterName = await qzLib.printers.getDefault();
+              console.log("Last-receipt printer cached:", _cachedLastReceiptPrinterName);
             }
 
-            // الطباعة باستخدام الاسم المحفوظ
-            await qzService.print(cachedPrinterName, htmlContent, "pixel");
+            // Print using cached printer name — skipConnect=true because we already connected above
+            await qzService.print(_cachedLastReceiptPrinterName, htmlContent, "pixel", {}, true);
 
             this.notification.add(
               _t("Last receipt printed successfully via QZ Tray for order: ") +
