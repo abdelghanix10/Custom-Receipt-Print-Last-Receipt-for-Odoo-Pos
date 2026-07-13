@@ -34,7 +34,7 @@
     """,
     'author': 'Abdelghani X',
     'images': ['static/description/banner.png'],
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale', 'odoo_qz_print', 'pos_print_second_receipt'],
     'data': [
         'security/ir.model.access.csv',
         'data/pos_receipt_design1_data.xml',
@@ -47,6 +47,7 @@
         'point_of_sale._assets_pos': [
             'custom_receipts_and_last_receipt_for_pos/static/src/js/receipt_design.js',
             'custom_receipts_and_last_receipt_for_pos/static/src/js/print_last_receipt.js',
+            'custom_receipts_and_last_receipt_for_pos/static/src/js/cash_drawer_pos.js',
             'custom_receipts_and_last_receipt_for_pos/static/src/xml/order_receipt.xml',
             'custom_receipts_and_last_receipt_for_pos/static/src/xml/print_last_receipt_button.xml',
         ],

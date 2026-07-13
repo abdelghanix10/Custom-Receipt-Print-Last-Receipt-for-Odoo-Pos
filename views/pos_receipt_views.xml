@@ -9,8 +9,10 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="open_cash_drawer_only"/>
                         <field name="design_receipt" widget="code"
-                               options="{'mode': 'xml'}"/>
+                               options="{'mode': 'xml'}"
+                               invisible="open_cash_drawer_only"/>
                     </group>
                 </sheet>
             </form>

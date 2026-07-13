@@ -37,3 +37,9 @@ class PosConfig(models.Model):
         ('qz_tray', 'QZ Tray')
     ], string='Print Last Receipt Method', default='chrome',
         help='Select how to print the last receipt: Chrome Preview uses browser print dialog, QZ Tray prints directly to printer')
+    open_cash_drawer_only = fields.Boolean(
+        related='receipt_design_id.open_cash_drawer_only',
+        string='Open Cash Drawer Only',
+        help='When enabled, validating an order will open the cash drawer '
+             'instead of printing a receipt.'
+    )
