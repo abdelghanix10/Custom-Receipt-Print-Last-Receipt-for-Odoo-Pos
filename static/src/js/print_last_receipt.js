@@ -356,7 +356,6 @@ export class PrintLastReceiptButton extends Component {
             // Get default printer once and cache it for all future prints
             if (!_cachedLastReceiptPrinterName) {
               _cachedLastReceiptPrinterName = await qzLib.printers.getDefault();
-              console.log("Last-receipt printer cached:", _cachedLastReceiptPrinterName);
             }
 
             // Print using cached printer name — skipConnect=true because we already connected above

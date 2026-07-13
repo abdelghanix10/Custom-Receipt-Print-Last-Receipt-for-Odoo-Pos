@@ -30,11 +30,9 @@ async function openCashDrawer(qzService) {
             return false;
         }
         const printerName = await qzLib.printers.getDefault();
-        console.log("[CashDrawer] Sending cash drawer command to:", printerName);
         for (const cmd of CASH_DRAWER_COMMANDS) {
             try {
                 await qzService.print(printerName, cmd, "raw");
-                console.log("[CashDrawer] Cash drawer opened successfully");
                 return true;
             } catch (err) {
                 console.warn("[CashDrawer] Command failed, trying next:", err.message);
@@ -51,10 +49,8 @@ patch(PosStore.prototype, {
     async printReceipt(options = {}) {
         // Check if the selected receipt design is set to "cash drawer only"
         const openCashDrawerOnly = this.config?.open_cash_drawer_only;
-        console.log("[CashDrawer] open_cash_drawer_only =", openCashDrawerOnly);
 
         if (openCashDrawerOnly) {
-            console.log("[CashDrawer] Skipping receipt print — opening cash drawer only");
             const qzService = this.env.services.qz_tray;
             await openCashDrawer(qzService);
             return { successful: true };
